@@ -1,0 +1,106 @@
+/* src/styles/ThreadPage.css */
+
+
+.thread-page-container {
+  padding: 20px;
+  background-color: #d9d9d9;
+  border-radius: 8px;
+  max-width: 800px; 
+  margin: auto;
+}
+
+
+.thread-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+}
+
+
+.post {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); 
+  display: flex;
+  flex-direction: column;
+}
+
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; 
+}
+
+.profile-image {
+  width: 50px; 
+  height: 50px;
+  border-radius: 50%; 
+  margin-right: 15px; 
+}
+
+.post-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-weight: bold;
+  color: #333;
+  font-size: 1.1rem; 
+}
+
+.post-time {
+  font-size: 0.9rem;
+  color: #888; 
+  margin-top: 5px; 
+}
+
+
+.post-content {
+  font-size: 1rem;
+  line-height: 1.5; 
+  color: #444;
+  margin-top: 10px; 
+}
+
+
+.post-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-form textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  resize: vertical; 
+}
+
+.post-form button {
+  padding: 12px 25px;
+  font-size: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.post-form button:hover {
+  background-color: #45a049; 
+}

@@ -1,21 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ThreadPage from './components/ThreadsPage';
 import BookDescription from './components/BookDescription';
 
 const App = () => {
-  const book = {
-    title: 'The Great Gatsby',
-    author: 'F. Scott Fitzgerald',
-    genres: ['Fiction', 'Classics'],
-    available: true,
-    location: 'UBCO Library',
-    image: require('./images/The_Great_Gatsby_Cover_1925_Retouched.jpg'),  
-    description: 'A story of the mysterious Jay Gatsby and his obsession with Daisy Buchanan.',
+  // Example user data (use real authentication for a production app)
+  const [user] = useState({
+    username: 'John Cena',
+    userId: '123',
+  });
+
+  // State to hold the list of posts
+  const [posts, setPosts] = useState([
+    {
+      id: 1,
+      username: 'John Cena',
+      time: '2 hours ago',
+      content: 'I LOVE GATSBY',
+      image: require('./images/defaultpfp.jpg'),
+    },
+    {
+      id: 2,
+      username: 'Jane Doe',
+      time: '3 hours ago',
+      content: 'I HATE GASTBY',
+      image: require('./images/defaultpfp.jpg'),
+    },
+  ]);
+
+
+  const addNewPost = (newPostObj) => {
+    setPosts([...posts, newPostObj]); 
   };
 
   return (
     <div className="App">
       <h1>Welcome to the Virtual Library</h1>
-      <BookDescription book={book} />
+      <ThreadPage user={user} posts={posts} addNewPost={addNewPost} />
     </div>
   );
 };
