@@ -1,4 +1,4 @@
-import cover1 from "../covers/cover1.jpg";
+import cover1 from "../images/cover1.jpg";
 
 export const books = [
   { id: 1, title: "Book 1", category: "Algorithm", image: cover1 },

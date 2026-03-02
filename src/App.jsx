@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import "./style.css";
+import "./styles/style.css";
 import { books as BOOKS } from "./data/books";
 import BookCard from "./components/bookCard.jsx";
 
