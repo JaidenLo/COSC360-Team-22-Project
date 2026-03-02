@@ -1,0 +1,36 @@
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 0.75rem 2rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 0.5rem;
+}
+
+ul li a {
+    display: block;
+    color: #333;
+    text-align: center;
+    padding: 8px 14px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+ul li a:hover {
+    background-color: #333;
+    color: #f0f0f0;
+}

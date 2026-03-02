@@ -1,0 +1,64 @@
+.profile-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: left;
+    border: 1px solid #e0e0e0;
+}
+
+.profile-top {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    background-color: #e8dff5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-icon {
+    font-size: 2.5rem;
+}
+
+.profile-name {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #222;
+}
+
+.profile-email {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.upload-btn {
+    background-color: #333;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.upload-btn:hover {
+    background-color: #555;
+}
+
+.about-link {
+    display: block;
+    text-align: right;
+    margin-top: 0.75rem;
+    color: #333;
+    font-size: 0.9rem;
+    text-decoration: underline;
+}
