@@ -3,13 +3,11 @@ import ThreadPage from './components/ThreadsPage';
 import BookDescription from './components/BookDescription';
 
 const App = () => {
-  // Example user data (use real authentication for a production app)
   const [user] = useState({
     username: 'John Cena',
     userId: '123',
   });
 
-  // State to hold the list of posts
   const [posts, setPosts] = useState([
     {
       id: 1,
