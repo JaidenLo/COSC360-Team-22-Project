@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import ThreadPage from './components/ThreadsPage';
+import BookDescription from './components/BookDescription';
 
-function App() {
+const App = () => {
+  const [user] = useState({
+    username: 'John Cena',
+    userId: '123',
+  });
+
+  const [posts, setPosts] = useState([
+    {
+      id: 1,
+      username: 'John Cena',
+      time: '2 hours ago',
+      content: 'I LOVE GATSBY',
+      image: require('./images/defaultpfp.jpg'),
+    },
+    {
+      id: 2,
+      username: 'Jane Doe',
+      time: '3 hours ago',
+      content: 'I HATE GASTBY',
+      image: require('./images/defaultpfp.jpg'),
+    },
+  ]);
+
+
+  const addNewPost = (newPostObj) => {
+    setPosts([...posts, newPostObj]); 
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Welcome to the Virtual Library</h1>
+      <ThreadPage user={user} posts={posts} addNewPost={addNewPost} />
     </div>
   );
-}
+};
 
 export default App;
