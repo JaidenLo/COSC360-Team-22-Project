@@ -29,7 +29,7 @@ function Form ({onSuccess}) {
         if (username && email && password) {
             setLoading(true);
             // Fetch user data from server
-            fetch('http://localhost:6000/api/user')
+            fetch('/api/user')
                 .then(response => response.json())
                 .then(data => {
                     // Assuming the server returns user data in JSON format

@@ -4,3 +4,28 @@
   padding: 0;
   text-align: left;
 }
+
+/* horizontal scrolling row of book cards */
+.books-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  width: 50%;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.books-container .book-card {
+  scroll-snap-align: start;
+}
+
+/* optional scrollbar styling */
+.books-container::-webkit-scrollbar {
+  height: 6px;
+}
+.books-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
