@@ -3,44 +3,28 @@ import "./UserProfile.css";
 import React, {useRef, useState} from "react";
 
 function UserProfile ({username, email}) {
-    // keep track of the chosen avatar URL (default or data URL)
+    
     const [avatar, setAvatar] = useState("/src/assets/react.svg");
     const fileInputRef = useRef(null);
 
-    // open the hidden file input when the button is clicked
+    
     function triggerUpload() {
         fileInputRef.current?.click();
     }
 
-    // handle the actual file selection
+    
     function handleFileChange(e) {
         const file = e.target.files[0];
         if (!file) return;
 
-        // preview locally by reading as a data URL
+        
         const reader = new FileReader();
         reader.onload = () => {
             setAvatar(reader.result);
         };
         reader.readAsDataURL(file);
 
-        // upload the file to the server
-        const form = new FormData();
-        form.append('avatar', file);
-        fetch('/api/avatar', {
-            method: 'POST',
-            body: form
-        })
-            .then(res => res.json())
-            .then(payload => {
-                // server returns the URL where it stored the avatar
-                if (payload.avatar) {
-                    setAvatar(payload.avatar);
-                }
-            })
-            .catch(err => {
-                console.error('upload failed', err);
-            });
+
     }
 
     return (
@@ -61,13 +45,7 @@ function UserProfile ({username, email}) {
                 Upload new Image
             </button>
 
-            <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-                accept="image/*"
-            />
+            <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: "none" }} accept="image/*"/>
 
             <a href="#" className="about-link">
                 About Me

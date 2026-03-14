@@ -17,12 +17,12 @@ function Footer() {
                 <a href="#">Blog</a>
                 <a href="#">Share and exchange</a>
             </div>
-                        <div className="footer-column">
+            <div className="footer-column">
                 <h4>Resources</h4>
                 <a href="#">Blog</a>
                 <a href="#">Share and exchange</a>
             </div>
-                        <div className="footer-column">
+            <div className="footer-column">
                 <h4>Resources</h4>
                 <a href="#">Blog</a>
                 <a href="#">Share and exchange</a>
