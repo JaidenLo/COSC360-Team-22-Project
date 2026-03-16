@@ -2,61 +2,111 @@
   {
     "id": 1,
     "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
     "category": "Literature",
+    "genres": ["Fiction", "Novel"],
+    "available": true,
+    "location": "Shelf A3",
+    "description": "A story of wealth, love, and the American Dream set in the 1920s.",
     "image": "/covers/cover1.jpg"
   },
   {
     "id": 2,
     "title": "Introduction to Algorithms",
+    "author": "Thomas H. Cormen",
     "category": "Algorithms",
+    "genres": ["Computer Science", "Textbook"],
+    "available": true,
+    "location": "Shelf B2",
+    "description": "A comprehensive textbook covering a broad range of algorithms in depth.",
     "image": "/covers/cover2.jpg"
   },
   {
     "id": 3,
     "title": "Clean Code",
+    "author": "Robert C. Martin",
     "category": "Programming",
+    "genres": ["Software Engineering", "Non-Fiction"],
+    "available": false,
+    "location": "Shelf C1",
+    "description": "A handbook of agile software craftsmanship focused on writing readable code.",
     "image": "/covers/cover3.jpg"
   },
   {
     "id": 4,
     "title": "Computer Ethics",
+    "author": "Deborah Johnson",
     "category": "Ethics",
+    "genres": ["Philosophy", "Technology"],
+    "available": true,
+    "location": "Shelf D4",
+    "description": "An exploration of ethical issues arising from the use of computer technology.",
     "image": "/covers/cover4.jpg"
   },
   {
     "id": 5,
     "title": "Discrete Mathematics",
+    "author": "Kenneth Rosen",
     "category": "Math",
+    "genres": ["Mathematics", "Textbook"],
+    "available": true,
+    "location": "Shelf E1",
+    "description": "A foundational text covering logic, sets, relations, graphs, and more.",
     "image": "/covers/cover5.jpg"
   },
   {
     "id": 6,
     "title": "Database Systems",
+    "author": "Ramez Elmasri",
     "category": "Databases",
+    "genres": ["Computer Science", "Textbook"],
+    "available": false,
+    "location": "Shelf B4",
+    "description": "A thorough introduction to database design, models, and SQL.",
     "image": "/covers/cover6.jpg"
   },
   {
     "id": 7,
     "title": "Operating Systems",
+    "author": "Abraham Silberschatz",
     "category": "Systems",
+    "genres": ["Computer Science", "Textbook"],
+    "available": true,
+    "location": "Shelf C3",
+    "description": "Covers the principles and practice of modern operating system design.",
     "image": "/covers/cover7.jpg"
   },
   {
     "id": 8,
     "title": "Artificial Intelligence",
+    "author": "Stuart Russell",
     "category": "AI",
+    "genres": ["Computer Science", "Textbook"],
+    "available": true,
+    "location": "Shelf F2",
+    "description": "A comprehensive introduction to the theory and practice of artificial intelligence.",
     "image": "/covers/cover8.jpg"
   },
-  { 
-    "id": 9, 
+  {
+    "id": 9,
     "title": "Web Development with React",
+    "author": "Kirupa Chinnathambi",
     "category": "Web",
-    "image": "/covers/cover9.jpg" 
+    "genres": ["Programming", "Non-Fiction"],
+    "available": true,
+    "location": "Shelf D1",
+    "description": "A practical guide to building modern web applications using React.",
+    "image": "/covers/cover9.jpg"
   },
-  { 
-    "id": 10, 
-    "title": "Network Security Basics", 
+  {
+    "id": 10,
+    "title": "Network Security Basics",
+    "author": "Mark Rhodes-Ousley",
     "category": "Security",
+    "genres": ["Cybersecurity", "Non-Fiction"],
+    "available": false,
+    "location": "Shelf G3",
+    "description": "An accessible introduction to the fundamentals of network security.",
     "image": "/covers/cover10.jpg"
   }
 ]

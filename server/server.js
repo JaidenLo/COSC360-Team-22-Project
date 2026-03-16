@@ -23,6 +23,21 @@ const saveBooks = (books) => {
   fs.writeFileSync(BOOKS_FILE, JSON.stringify(books, null, 2));
 };
 
+// Login 
+app.post("/api/login", (req, res) => {
+  const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
+    return res.status(400).json({ error: "All fields are required." });
+  }
+
+  res.status(200).json({
+    message: `Welcome, ${username}! You are now logged in.`,
+    username,
+    email,
+  });
+});
+
 // Search books by title or category
 app.get("/search", (req, res) => {
   try {
