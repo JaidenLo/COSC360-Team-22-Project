@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
+import Form from './components/Form';
 import ThreadPage from './components/ThreadsPage';
 import BookDescription from './components/BookDescription';
 
 const App = () => {
-  const [view, setView] = useState('book'); // 'book' or 'threads'
-
-  const [user] = useState({
-    username: 'John Cena',
-    userId: '123',
-  });
+  const [view, setView] = useState('login'); 
+  const [user, setUser] = useState(null);
 
   const [book] = useState({
     title: 'The Great Gatsby',
@@ -32,7 +29,7 @@ const App = () => {
       id: 2,
       username: 'Jane Doe',
       time: '3 hours ago',
-      content: 'I HATE GASTBY',
+      content: 'I HATE GATSBY',
       image: require('./images/defaultpfp.jpg'),
     },
   ]);
@@ -41,15 +38,27 @@ const App = () => {
     setPosts([...posts, newPostObj]);
   };
 
+  const handleLogin = (userData) => {
+    setUser(userData);
+    setView('book');
+  };
+
   return (
     <div className="App">
       <h1>Welcome to the Virtual Library</h1>
-      {view === 'book' ? (
+
+      {view === 'login' && (
+        <Form onSuccess={handleLogin} />
+      )}
+
+      {view === 'book' && (
         <BookDescription
           book={book}
           onViewThreads={() => setView('threads')}
         />
-      ) : (
+      )}
+
+      {view === 'threads' && (
         <ThreadPage
           user={user}
           posts={posts}
