@@ -1,0 +1,286 @@
+:root {
+  --stroke: #ddd;
+  --muted: #f6f6f6;
+  --muted2: #e9e9e9;
+  --text: #111;
+}
+
+* { box-sizing: border-box; }
+body { 
+  margin: 0; 
+  font-family: Arial, Helvetica, sans-serif; 
+  color: var(--text); 
+}
+
+a { 
+  color: inherit; 
+  text-decoration: none; 
+}
+
+.page { 
+  min-height: 100vh; 
+  display: flex; 
+  flex-direction: column; 
+}
+
+/* NAV */
+.nav { 
+  background: #fff; 
+  border-bottom: 1px solid #eee; 
+}
+.navInner {
+  max-width: 1100px; 
+  margin: 0 auto; 
+  padding: 14px 18px;
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: 16px;
+}
+
+.logo { 
+  font-weight: 700; 
+  font-size: 18px; 
+}
+
+.navLinks { 
+  display: flex; 
+  gap: 18px; 
+  font-size: 13px; 
+  color: #333; 
+}
+.navAuth { 
+  display: flex; 
+  gap: 10px; 
+}
+
+.btn {
+  border: 1px solid var(--stroke); 
+  padding: 7px 12px;
+  border-radius: 10px;
+  background: #fff; 
+  font-size: 12px; 
+  cursor: pointer;
+}
+.btn.dark { 
+  background: #111; 
+  color: #fff; 
+  border-color: #111; 
+}
+
+/* HERO */
+.hero { 
+  background: var(--muted); 
+  padding: 70px 18px; 
+  text-align: center; 
+}
+.hero h1 { 
+  margin: 0; 
+  font-size: 44px; 
+}
+.hero p { 
+  margin: 10px 0 0; 
+  color: #777; 
+}
+
+/* CONTENT */
+.content { 
+  flex: 1; 
+  background: var(--muted2); 
+}
+.booksSection { 
+  max-width: 1100px; 
+  margin: 0 auto;
+  padding: 18px; 
+}
+.booksTopRow {
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+  gap: 14px; 
+  margin-bottom: 16px;
+}
+.sectionTitle { 
+  margin: 0; 
+  font-size: 13px; 
+}
+
+/* SEARCH */
+.searchWrap {
+  display: flex; 
+  align-items: center; 
+  width: min(520px, 100%);
+  background: #fff; 
+  border: 1px solid var(--stroke); 
+  border-radius: 999px; 
+  overflow: hidden;
+}
+.searchInput { 
+  border: 0; 
+  outline: none; 
+  padding: 10px 14px; 
+  width: 100%; 
+  font-size: 12px; 
+}
+.searchBtn { 
+  border: 0; 
+  background: #fff; 
+  padding: 0 14px; 
+  cursor: pointer; 
+}
+
+/* GRID */
+.grid { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 26px; 
+  padding: 18px 0 10px; 
+}
+
+/* CARD */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+}
+
+.coverWrap {
+  height: 150px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 10px;
+}
+
+.cover {
+  max-height: 150px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.cardTitle {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.cardSubtitle {
+  color: #777;
+  font-size: 12px;
+}
+
+/* PAGINATION */
+.pager {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding-top: 10px;
+}
+
+.pagerBtn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  color: #444;
+}
+
+.pagerNums {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.num {
+  width: 28px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  color: #444;
+}
+
+.num.active {
+  background: #111;
+  color: #fff;
+}
+
+.dots {
+  color: #777;
+  font-size: 14px;
+}
+
+/* FOOTER */
+.footer {
+  background: #fff;
+  border-top: 1px solid #eee;
+  padding: 22px 18px;
+}
+
+.footerInner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.footerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.socials {
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.footerCols {
+  display: flex;
+  gap: 60px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.colTitle {
+  font-weight: 700;
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.col a {
+  font-size: 12px;
+  color: #333;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .navLinks {
+    display: none;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .booksTopRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pager {
+    justify-content: center;
+  }
+}

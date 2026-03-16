@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
 import Form from './components/Form';
+import BookList from './components/BookList';
 import ThreadPage from './components/ThreadsPage';
 import BookDescription from './components/BookDescription';
 
 const App = () => {
-  const [view, setView] = useState('login'); 
+  const [view, setView] = useState('login'); // 'login' | 'booklist' | 'book' | 'threads'
   const [user, setUser] = useState(null);
-
-  const [book] = useState({
-    title: 'The Great Gatsby',
-    author: 'F. Scott Fitzgerald',
-    genres: ['Novel', 'Fiction'],
-    available: true,
-    location: 'Shelf A3',
-    description: 'A story of wealth, love, and the American Dream set in the 1920s.',
-    image: require('./images/The_Great_Gatsby_Cover_1925_Retouched.jpg'),
-  });
+  const [selectedBook, setSelectedBook] = useState(null);
 
   const [posts, setPosts] = useState([
     {
@@ -40,30 +32,38 @@ const App = () => {
 
   const handleLogin = (userData) => {
     setUser(userData);
+    setView('booklist');
+  };
+
+  const handleSelectBook = (book) => {
+    setSelectedBook(book);
     setView('book');
   };
 
   return (
     <div className="App">
-      <h1>Welcome to the Virtual Library</h1>
-
       {view === 'login' && (
         <Form onSuccess={handleLogin} />
       )}
 
-      {view === 'book' && (
+      {view === 'booklist' && (
+        <BookList onSelectBook={handleSelectBook} />
+      )}
+
+      {view === 'book' && selectedBook && (
         <BookDescription
-          book={book}
+          book={selectedBook}
           onViewThreads={() => setView('threads')}
+          onBack={() => setView('booklist')}
         />
       )}
 
-      {view === 'threads' && (
+      {view === 'threads' && selectedBook && (
         <ThreadPage
           user={user}
           posts={posts}
           addNewPost={addNewPost}
-          bookTitle={book.title}
+          bookTitle={selectedBook.title}
           onBack={() => setView('book')}
         />
       )}
