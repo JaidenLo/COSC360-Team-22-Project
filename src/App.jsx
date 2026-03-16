@@ -3,16 +3,24 @@ import "./styles/style.css";
 import BookCard from "./components/bookCard.jsx";
 
 export default function App() {
+  // Search text
   const [query, setQuery] = useState("");
+
+  // Books currently being displayed
   const [books, setBooks] = useState([]);
 
+  // Form fields for adding a new book
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
+
+  // Message returned from the server
   const [message, setMessage] = useState("");
 
+  // Controls when to show "No results found"
   const [showNoResults, setShowNoResults] = useState(false);
 
+  // Load all books when the page first opens
   useEffect(() => {
     fetch("http://localhost:3001/search?term=")
       .then((res) => res.json())
@@ -25,6 +33,7 @@ export default function App() {
       });
   }, []);
 
+  // Reload all books from the server
   const loadAllBooks = async () => {
     try {
       const res = await fetch("http://localhost:3001/search?term=");
@@ -36,6 +45,7 @@ export default function App() {
     }
   };
 
+  // Search for books by title or category
   const handleSearch = async (e) => {
     e.preventDefault();
 
@@ -48,7 +58,11 @@ export default function App() {
       const data = await res.json();
 
       setBooks(data);
+
+      // Only show "No results" if a real search was entered
       setShowNoResults(trimmedQuery !== "" && data.length === 0);
+
+      // Clear the search box after submit
       setQuery("");
     } catch {
       setBooks([]);
@@ -56,6 +70,7 @@ export default function App() {
     }
   };
 
+  // Send a new book to the server
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -72,9 +87,12 @@ export default function App() {
       setMessage(data.message);
 
       if (res.ok) {
+        // Clear form inputs after a successful submit
         setTitle("");
         setCategory("");
         setImage("");
+
+        // Refresh the displayed books
         await loadAllBooks();
       }
     } catch {
