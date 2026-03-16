@@ -1,24 +1,89 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import "./styles/style.css";
-import { books as BOOKS } from "./data/books";
 import BookCard from "./components/bookCard.jsx";
 
 export default function App() {
   const [query, setQuery] = useState("");
+  const [books, setBooks] = useState([]);
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return BOOKS;
-    return BOOKS.filter(
-      (b) =>
-        b.title.toLowerCase().includes(q) ||
-        (b.category?.toLowerCase().includes(q) ?? false)
-    );
-  }, [query]);
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [image, setImage] = useState("");
+  const [message, setMessage] = useState("");
+
+  const [showNoResults, setShowNoResults] = useState(false);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/search?term=")
+      .then((res) => res.json())
+      .then((data) => {
+        setBooks(data);
+        setShowNoResults(false);
+      })
+      .catch(() => {
+        setBooks([]);
+      });
+  }, []);
+
+  const loadAllBooks = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/search?term=");
+      const data = await res.json();
+      setBooks(data);
+      setShowNoResults(false);
+    } catch {
+      setBooks([]);
+    }
+  };
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+
+    try {
+      const trimmedQuery = query.trim();
+
+      const res = await fetch(
+        `http://localhost:3001/search?term=${encodeURIComponent(trimmedQuery)}`
+      );
+      const data = await res.json();
+
+      setBooks(data);
+      setShowNoResults(trimmedQuery !== "" && data.length === 0);
+      setQuery("");
+    } catch {
+      setBooks([]);
+      setShowNoResults(true);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:3001/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ title, category, image })
+      });
+
+      const data = await res.json();
+      setMessage(data.message);
+
+      if (res.ok) {
+        setTitle("");
+        setCategory("");
+        setImage("");
+        await loadAllBooks();
+      }
+    } catch {
+      setMessage("Error submitting form.");
+    }
+  };
 
   return (
     <div className="page">
-      {/* NAVBAR */}
       <header className="nav">
         <div className="navInner">
           <div className="logo">⌘</div>
@@ -38,38 +103,73 @@ export default function App() {
         </div>
       </header>
 
-      {/* HERO */}
       <section className="hero">
         <h1>Books</h1>
         <p>Read, Make Stronger</p>
       </section>
 
-      {/* BOOKS SECTION */}
       <main className="content">
         <section className="booksSection">
           <div className="booksTopRow">
             <h3 className="sectionTitle">All books</h3>
 
-            <div className="searchWrap">
+            <form className="searchWrap" onSubmit={handleSearch}>
               <input
                 className="searchInput"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="What you would like to read"
               />
-              <button className="searchBtn" aria-label="search">
+              <button type="submit" className="searchBtn" aria-label="search">
                 🔍
               </button>
-            </div>
+            </form>
+          </div>
+
+          <div className="submitPanel">
+            <h3 className="sectionTitle">Add a book</h3>
+
+            <form className="submitForm" onSubmit={handleSubmit}>
+              <input
+                className="formInput"
+                type="text"
+                placeholder="Book title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+
+              <input
+                className="formInput"
+                type="text"
+                placeholder="Category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              />
+
+              <input
+                className="formInput"
+                type="text"
+                placeholder="/covers/cover1.jpg"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+              />
+
+              <button type="submit" className="btn dark">
+                Submit
+              </button>
+            </form>
+
+            {message && <p className="serverMessage">{message}</p>}
           </div>
 
           <div className="grid">
-            {filtered.map((b) => (
-              <BookCard key={b.id} book={b} />
-            ))}
+            {books.length > 0 ? (
+              books.map((book) => <BookCard key={book.id} book={book} />)
+            ) : (
+              showNoResults && <p className="noResults">No results found</p>
+            )}
           </div>
 
-          {/* SIMPLE PAGINATION LOOK (static UI) */}
           <div className="pager">
             <button className="pagerBtn">← Previous</button>
             <div className="pagerNums">
@@ -85,7 +185,6 @@ export default function App() {
         </section>
       </main>
 
-      {/* FOOTER */}
       <footer className="footer">
         <div className="footerInner">
           <div className="footerLeft">

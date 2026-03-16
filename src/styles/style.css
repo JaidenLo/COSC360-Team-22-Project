@@ -284,3 +284,39 @@ a {
     justify-content: center;
   }
 }
+
+
+.submitPanel {
+  background: #fff;
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.submitForm {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.formInput {
+  border: 1px solid var(--stroke);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  min-width: 220px;
+  flex: 1;
+}
+
+.serverMessage {
+  font-size: 12px;
+  color: #444;
+  margin-top: 12px;
+}
+
+.noResults {
+  font-size: 14px;
+  color: #666;
+}
