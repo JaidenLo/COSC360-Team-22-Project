@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/BookDescription.css';
 
-const BookDescription = ({ book }) => {
+const BookDescription = ({ book, onViewThreads }) => {
   return (
     <div className="book-description-container">
       <div className="book-image">
@@ -18,7 +18,9 @@ const BookDescription = ({ book }) => {
 
         <div className="buttons">
           <button className="borrow-button">Borrow Book</button>
-          <button className="threads-button">View Threads</button>
+          <button className="threads-button" onClick={onViewThreads}>
+            View Threads
+          </button>
         </div>
 
         <div className="description">
