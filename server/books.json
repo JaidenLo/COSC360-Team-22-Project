@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "The Great Gatsby",
+    "category": "Literature",
+    "image": "/covers/cover1.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Introduction to Algorithms",
+    "category": "Algorithms",
+    "image": "/covers/cover2.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Clean Code",
+    "category": "Programming",
+    "image": "/covers/cover3.jpg"
+  },
+  {
+    "id": 4,
+    "title": "Computer Ethics",
+    "category": "Ethics",
+    "image": "/covers/cover4.jpg"
+  },
+  {
+    "id": 5,
+    "title": "Discrete Mathematics",
+    "category": "Math",
+    "image": "/covers/cover5.jpg"
+  },
+  {
+    "id": 6,
+    "title": "Database Systems",
+    "category": "Databases",
+    "image": "/covers/cover6.jpg"
+  },
+  {
+    "id": 7,
+    "title": "Operating Systems",
+    "category": "Systems",
+    "image": "/covers/cover7.jpg"
+  },
+  {
+    "id": 8,
+    "title": "Artificial Intelligence",
+    "category": "AI",
+    "image": "/covers/cover8.jpg"
+  },
+  { 
+    "id": 9, 
+    "title": "Web Development with React",
+    "category": "Web",
+    "image": "/covers/cover9.jpg" 
+  },
+  { 
+    "id": 10, 
+    "title": "Network Security Basics", 
+    "category": "Security",
+    "image": "/covers/cover10.jpg"
+  }
+]
