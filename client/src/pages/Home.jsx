@@ -25,10 +25,10 @@ function Home() {
                     ownderId={book.ownerId}
                 />
             ))} */}
-        <BookCard />
-        <BookCard />
-        <BookCard />
-        <BookCard />
+            <BookCard />
+            <BookCard />
+            <BookCard />
+            <BookCard />
 
         </div>
             

@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/User'); //user data on mongodb 
 const bcrypt = require('bcryptjs');
 
 // Register user
@@ -7,11 +7,12 @@ const registerUser = async (req, res) => {
         const { username, email, password, city } = req.body;
 
         // check if user already exists
+        
         const userExists = await User.findOne({ email });
         if (userExists) {
             return res.status(400).json({ message: 'User already exists' });
         }
-
+        
         // hash the password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -21,7 +22,8 @@ const registerUser = async (req, res) => {
             name: username,
             email,
             password: hashedPassword,
-            city
+            city,
+            usertype
         });
 
         res.status(201).json({
@@ -29,6 +31,7 @@ const registerUser = async (req, res) => {
             id: user._id,
             name: user.name,
             email: user.email,
+            usertype: user.usertype
         });
 
     } catch (error) {
@@ -59,6 +62,7 @@ const loginUser = async (req, res) => {
             id: user._id,
             name: user.name,
             email: user.email,
+            usertype: user.usertype
         });
 
     } catch (error) {
