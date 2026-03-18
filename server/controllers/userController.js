@@ -76,14 +76,14 @@ const getAllUsers = async (req, res) => {
     try {
         const { search } = req.query;
 
-        // get all users from MongoDB
+        
         const allUsers = await User.find().select('-password');
 
-        // filter using .includes() in JavaScript
+       
         let users = allUsers;
         if (search) {
             users = allUsers.filter(user =>
-                user.name.toLowerCase().includes(search.toLowerCase())
+                user.name.toLowerCase().trim() === search.toLowerCase().trim()
             );
         }
 
