@@ -68,7 +68,7 @@ function UserProfile ({username, email , usertype}) {
             <a href="#" className="about-link">
                 About Me
             </a>
-
+                {/* display the search feature if the user is admin else does not show */}
                 {usertype === 'admin' && (
                 <div className="admin-section">
                     <h3>Search Users</h3>
@@ -77,7 +77,7 @@ function UserProfile ({username, email , usertype}) {
                     <form onSubmit={handleSearch}>
                         <input
                             type="text"
-                            placeholder="Search by name, email or city..."
+                            placeholder="Search by name..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             className="search-input"
@@ -85,12 +85,12 @@ function UserProfile ({username, email , usertype}) {
                         <button type="submit">Search</button>
                     </form>
 
-                    {/* no results */}
+                    {/* if not result found return no user found */}
                     {searched && users.length === 0 && (
                         <p>No users found.</p>
                     )}
 
-                    {/* dynamic users table */}
+                    {/* Show searched results */}
                     {users.length > 0 && (
                         <div className="users-list">
                             <table className="users-table">

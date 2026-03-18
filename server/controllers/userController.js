@@ -76,20 +76,17 @@ const getAllUsers = async (req, res) => {
     try {
         const { search } = req.query;
 
-        let query = {};
+        // get all users from MongoDB
+        const allUsers = await User.find().select('-password');
 
+        // filter using .includes() in JavaScript
+        let users = allUsers;
         if (search) {
-            query = {
-                $or: [
-                    { name:  { $regex: search, $options: 'i' } },
-                    { email: { $regex: search, $options: 'i' } },
-                    { city:  { $regex: search, $options: 'i' } },
-                ]
-            };
+            users = allUsers.filter(user =>
+                user.name.toLowerCase().includes(search.toLowerCase())
+            );
         }
 
-        // never return passwords
-        const users = await User.find(query).select('-password');
         res.status(200).json(users);
 
     } catch (error) {
