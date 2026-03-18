@@ -23,7 +23,7 @@ const registerUser = async (req, res) => {
             email,
             password: hashedPassword,
             city,
-            usertype
+            
         });
 
         res.status(201).json({
@@ -44,7 +44,7 @@ const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        
+        console.log('Request body:', req.body);
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -66,8 +66,36 @@ const loginUser = async (req, res) => {
         });
 
     } catch (error) {
+        console.log('Error:', error.message);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
 
-module.exports = { registerUser, loginUser };
+
+const getAllUsers = async (req, res) => {
+    try {
+        const { search } = req.query;
+
+        let query = {};
+
+        if (search) {
+            query = {
+                $or: [
+                    { name:  { $regex: search, $options: 'i' } },
+                    { email: { $regex: search, $options: 'i' } },
+                    { city:  { $regex: search, $options: 'i' } },
+                ]
+            };
+        }
+
+        // never return passwords
+        const users = await User.find(query).select('-password');
+        res.status(200).json(users);
+
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+module.exports = { registerUser, loginUser, getAllUsers };
+

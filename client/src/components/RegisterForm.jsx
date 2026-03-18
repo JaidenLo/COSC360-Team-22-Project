@@ -1,7 +1,7 @@
 import "./RegisterForm.css";
 
 
-import {useEffect, useState} from "react";
+import { useState} from "react";
 
 function RegisterForm ({onSuccess}) {
         const [username, setUsername] = useState("");
@@ -70,7 +70,7 @@ function RegisterForm ({onSuccess}) {
 
         //to check city only contains letters and spaces and is not empty
         
-        if(checkCity(city)){
+        if(!checkCity(city)){
             valid = false;
             const errorDiv = document.createElement("p");   
             errorDiv.className = "error-message";
@@ -127,6 +127,7 @@ function RegisterForm ({onSuccess}) {
                 document.querySelector('input[type="email"]').parentNode.appendChild(errorDiv);
             } else if (response.status === 201) {
                 onSuccess({ username: data.name, email: data.email });
+                
             }
         } catch (error) {
             console.error('Error:', error);

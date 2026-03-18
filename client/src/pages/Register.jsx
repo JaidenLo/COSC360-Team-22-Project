@@ -2,16 +2,12 @@ import RegisterForm from "../components/RegisterForm";
 import React from "react";
 import "./Register.css";
 
-function Register() {
-
-
-    
-
-
+function Register({ onSuccess }) {
 
     return (
         <>
-            <RegisterForm />
+            
+           <RegisterForm onSuccess={onSuccess} />
         </>
     );
 }

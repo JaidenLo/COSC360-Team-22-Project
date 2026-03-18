@@ -48,7 +48,8 @@ function Form ({onSuccess}) {
             } else if (response.status === 400) {
                 addError(document.querySelector('input[type="password"]'), "Incorrect password.");
             } else if (response.status === 200) {
-                onSuccess({ username: data.name, email: data.email, userType: data.userType});
+                onSuccess({ username: data.name, email: data.email, usertype: data.usertype});
+                
             }
     }
     return (

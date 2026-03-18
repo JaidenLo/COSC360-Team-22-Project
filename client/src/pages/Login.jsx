@@ -1,19 +1,21 @@
 import { useState } from "react";
 import Form from "../components/Form.jsx";
-import UserProfile from "../components/UserProfile.jsx";
+import Profile from "../pages/Profile.jsx";
 
 function Login({ onSuccess }) {
     const [user, setUser] = useState(null);
 
     function handleSuccess(userData) {
         setUser(userData);
-        onSuccess(userData);
+        if (typeof onSuccess === 'function') {
+            onSuccess(userData);
+        }
     }
 
     return (
         <>
             {user ? (
-                <UserProfile username={user.username} email={user.email} />
+                <Profile user={user} />
             ) : (
                 <Form onSuccess={handleSuccess} />
             )}
