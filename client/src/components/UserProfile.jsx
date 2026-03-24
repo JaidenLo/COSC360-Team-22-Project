@@ -73,7 +73,7 @@ function UserProfile ({username, email , usertype}) {
                 <div className="admin-section">
                     <h3>Search Users</h3>
 
-                    {/* search bar */}
+                    {/* to search */}
                     <form onSubmit={handleSearch}>
                         <input
                             type="text"
