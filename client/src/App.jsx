@@ -1,30 +1,35 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Footer from "./components/Footer";
 import Nav from "./components/Nav";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
-import "./App.css";
 import Profile from "./pages/Profile";
+import "./App.css";
 
 function App() {
-    const [user, setUser] = useState(null);  
+    const [user, setUser] = useState(null);
 
     return (
         <div>
             <Nav user={user} setUser={setUser} />
+
             <Routes>
-                <Route path="/"         element={<Home />} />
-                <Route path="/login"    element={<Login onSuccess={setUser} />} />      
-                <Route path="/register" element={<Register onSuccess={setUser} />} />   
-
-
-                <Route path="/Profile"  element={<Profile user={user}/>}/>
-
+                <Route path="/" element={<Navigate to="/login" replace />} />
+                <Route path="/login" element={<Login onSuccess={setUser} />} />
+                <Route path="/register" element={<Register onSuccess={setUser} />} />
+                <Route path="/home" element={<Home />} />
+                <Route
+                    path="/profile"
+                    element={user ? <Profile user={user} /> : <Navigate to="/login" replace />}
+                />
+                <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
+
             <Footer />
         </div>
     );
 }
+
 export default App;

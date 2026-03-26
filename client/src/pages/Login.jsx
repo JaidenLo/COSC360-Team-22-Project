@@ -1,25 +1,17 @@
-import { useState } from "react";
 import Form from "../components/Form.jsx";
-import Profile from "../pages/Profile.jsx";
+import { useNavigate } from "react-router-dom";
 
 function Login({ onSuccess }) {
-    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
     function handleSuccess(userData) {
-        setUser(userData);
-        if (typeof onSuccess === 'function') {
+        if (typeof onSuccess === "function") {
             onSuccess(userData);
         }
+        navigate("/profile");
     }
 
-    return (
-        <>
-            {user ? (
-                <Profile user={user} />
-            ) : (
-                <Form onSuccess={handleSuccess} />
-            )}
-        </>
-    );
+    return <Form onSuccess={handleSuccess} />;
 }
+
 export default Login;
