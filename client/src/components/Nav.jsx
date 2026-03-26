@@ -13,6 +13,7 @@ function Nav({ user, setUser }) {
         <nav className="nav">
             <ul>
                 <li><Link to="/home">Home</Link></li>
+                <li><Link to="/add-book">Add Book</Link></li>
 
                 {user ? (
                     <>

@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import AddBook from "./pages/AddBook";
 import "./App.css";
 
 function App() {
@@ -20,11 +21,8 @@ function App() {
                 <Route path="/login" element={<Login onSuccess={setUser} />} />
                 <Route path="/register" element={<Register onSuccess={setUser} />} />
                 <Route path="/home" element={<Home />} />
-                <Route
-                    path="/profile"
-                    element={user ? <Profile user={user} /> : <Navigate to="/login" replace />}
-                />
-                <Route path="*" element={<Navigate to="/login" replace />} />
+                <Route path="/profile" element={<Profile user={user} />} />
+                <Route path="/add-book" element={<AddBook/>}/>
             </Routes>
 
             <Footer />
