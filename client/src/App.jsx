@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import AddBook from "./pages/AddBook";
+import UserSettings from "./pages/UserSettings";
 import "./App.css";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/profile" element={<Profile user={user} />} />
                 <Route path="/add-book" element={<AddBook/>}/>
+                <Route path="/edit-profile" element={<UserSettings user={user} setUser={setUser}/>}/>
             </Routes>
 
             <Footer />

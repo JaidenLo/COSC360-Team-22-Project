@@ -12,13 +12,12 @@ function Nav({ user, setUser }) {
     return (
         <nav className="nav">
             <ul>
-                <li><Link to="/home">Home</Link></li>
-                <li><Link to="/add-book">Add Book</Link></li>
-
                 {user ? (
                     <>
+                        <li><Link to="/home">Home</Link></li>
+                        <li><Link to="/add-book">Add Book</Link></li>
                         <li><Link to="/profile">Profile</Link></li>
-                        <li><button onClick={handleLogout}>Logout</button></li>
+                        <li className="logout-item"><button onClick={handleLogout}>Logout</button></li>
                     </>
                 ) : (
                     <>

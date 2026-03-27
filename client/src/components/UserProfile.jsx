@@ -1,8 +1,8 @@
-import BookCard from "./BookCard";
 import "./UserProfile.css";
 import React, {useRef, useState} from "react";
+import { Link } from "react-router-dom";
 
-function UserProfile ({username, email , usertype}) {
+function UserProfile ({username, email , usertype, city}) {
     
     const [avatar, setAvatar] = useState("/src/assets/react.svg");
     const [search, setSearch] = useState("");
@@ -54,8 +54,7 @@ function UserProfile ({username, email , usertype}) {
                             <span className="admin-tag">Admin</span>
                         )}</h2>
                     <p className="profile-email">{email}</p>
-
-                    
+                    <p className="profile-city">City: {city || "Not set"}</p>
                 </div>
             </div>
 
@@ -63,65 +62,72 @@ function UserProfile ({username, email , usertype}) {
                 Upload new Image
             </button>
 
-            <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: "none" }} accept="image/*"/>
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+                accept="image/*"
+            />
 
             <a href="#" className="about-link">
                 About Me
             </a>
-                {/* display the search feature if the user is admin else does not show */}
-                {usertype === 'admin' && (
-                <div className="admin-section">
-                    <h3>Search Users</h3>
 
-                    {/* to search */}
-                    <form onSubmit={handleSearch}>
-                        <input
-                            type="text"
-                            placeholder="Search by name..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            className="search-input"
-                        />
-                        <button type="submit">Search</button>
-                    </form>
+            <div className="profile-actions">
+                <Link to="/edit-profile" className="edit-profile-btn">
+                    Edit Profile
+                </Link>
+            </div>
+            {/* display the search feature if the user is admin else does not show */}
+            {usertype === 'admin' && (
+            <div className="admin-section">
+                <h3>Search Users</h3>
 
-                    {/* if not result found return no user found */}
-                    {searched && users.length === 0 && (
-                        <p>No users found.</p>
-                    )}
+                {/* to search */}
+                <form onSubmit={handleSearch}>
+                    <input
+                        type="text"
+                        placeholder="Search by name..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="search-input"
+                    />
+                    <button type="submit">Search</button>
+                </form>
 
-                    {/* Show searched results */}
-                    {users.length > 0 && (
-                        <div className="users-list">
-                            <table className="users-table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>City</th>
-                                        <th>Type</th>
+                {/* if not result found return no user found */}
+                {searched && users.length === 0 && (
+                    <p>No users found.</p>
+                )}
+
+                {/* Show searched results */}
+                {users.length > 0 && (
+                    <div className="users-list">
+                        <table className="users-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>City</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users.map(user => (
+                                    <tr key={user._id}>
+                                        <td>{user.name}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.city}</td>
+                                        <td>{user.usertype}</td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {users.map(user => (
-                                        <tr key={user._id}>
-                                            <td>{user.name}</td>
-                                            <td>{user.email}</td>
-                                            <td>{user.city}</td>
-                                            <td>{user.usertype}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
-                </div>
-            )}
-
-
-
-
-
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
+        )}
         </div>
     );
 }

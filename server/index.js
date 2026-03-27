@@ -24,7 +24,10 @@ app.get('/api', (req, res) => {
 const userRoutes = require('./routes/userRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 
+console.log('Mounting /api/users routes');
 app.use('/api/users', userRoutes);
+
+console.log('Mounting /api/books routes');
 app.use('/api/books', bookRoutes);
 
 const PORT = process.env.PORT || 5000; 
