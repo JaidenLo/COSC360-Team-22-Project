@@ -57,13 +57,18 @@ const loginUser = async (req, res) => {
         }
 
         
-        res.status(200).json({
-            message: 'Login successful',
+        const responseData = {
+            message: "Login successful",
             id: user._id,
             name: user.name,
             email: user.email,
-            usertype: user.usertype
-        });
+            usertype: user.usertype,
+            city: user.city
+        };
+
+        console.log("LOGIN RESPONSE userController.js:", responseData);
+
+        res.status(200).json(responseData);
 
     } catch (error) {
         console.log('Error:', error.message);

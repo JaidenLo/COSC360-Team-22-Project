@@ -3,5 +3,8 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     padding: 1rem;
+    flex: 1;
     background-color: white;
+    align-content: start;
+    box-sizing: border-box;
 }

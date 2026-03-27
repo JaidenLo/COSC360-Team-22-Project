@@ -8,6 +8,7 @@ function Form ({onSuccess}) {
         const [email, setEmail] = useState("");
         const [password, setPassword] = useState("");
         const [loading] = useState(false);
+        
         function addError(field, message) {
             const errorDiv = document.createElement("p");
             errorDiv.className = "error-message";
@@ -48,13 +49,12 @@ function Form ({onSuccess}) {
             } else if (response.status === 400) {
                 addError(document.querySelector('input[type="password"]'), "Incorrect password.");
             } else if (response.status === 200) {
-                console.log("LOGIN RESPONSE:", data);
-                onSuccess({
-                    _id: data.id,
-                    username: data.name,
-                    email: data.email,
-                    city: data.city || "",
-                    usertype: data.usertype
+                onSuccess({ 
+                    _id: data.id, 
+                    username: data.name, 
+                    email: data.email, 
+                    city: data.city, 
+                    usertype: data.usertype 
                 });
             }
     }

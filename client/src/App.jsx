@@ -14,19 +14,19 @@ function App() {
     const [user, setUser] = useState(null);
 
     return (
-        <div>
+        <div className="siteContainer">
             <Nav user={user} setUser={setUser} />
-
-            <Routes>
-                <Route path="/" element={<Navigate to="/login" replace />} />
-                <Route path="/login" element={<Login onSuccess={setUser} />} />
-                <Route path="/register" element={<Register onSuccess={setUser} />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/profile" element={<Profile user={user} />} />
-                <Route path="/add-book" element={<AddBook/>}/>
-                <Route path="/edit-profile" element={<UserSettings user={user} setUser={setUser}/>}/>
-            </Routes>
-
+            <div className="page-content">
+                <Routes>
+                    <Route path="/" element={<Navigate to="/login" replace />} />
+                    <Route path="/login" element={<Login onSuccess={setUser} />} />
+                    <Route path="/register" element={<Register onSuccess={setUser} />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/profile" element={<Profile user={user} />} />
+                    <Route path="/add-book" element={<AddBook/>}/>
+                    <Route path="/edit-profile" element={<UserSettings user={user} setUser={setUser}/>}/>
+                </Routes>
+            </div>
             <Footer />
         </div>
     );

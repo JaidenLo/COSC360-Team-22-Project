@@ -5,7 +5,7 @@ function UserSettings({ user, setUser }) {
     const [email, setEmail] = useState(user?.email || "");
     const [city, setCity] = useState(user?.city || "");
 
-    console.log("EDIT PROFILE USER:", user);
+    console.log("PROFILE USER:", user);
 
     if (!user) {
         return <p>Please login first.</p>;

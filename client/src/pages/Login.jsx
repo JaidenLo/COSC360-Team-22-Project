@@ -10,7 +10,7 @@ function Login({ onSuccess }) {
         }
         navigate("/profile");
     }
-
+    
     return <Form onSuccess={handleSuccess} />;
 }
 

@@ -10,6 +10,7 @@ function UserProfile ({username, email , usertype, city}) {
     const [searched, setSearched] = useState(false);
     const fileInputRef = useRef(null);
 
+
     
     function triggerUpload() {
         fileInputRef.current?.click();
@@ -58,9 +59,7 @@ function UserProfile ({username, email , usertype, city}) {
                 </div>
             </div>
 
-            <button className="upload-btn" onClick={triggerUpload}>
-                Upload new Image
-            </button>
+            
 
             <input
                 type="file"
@@ -78,6 +77,9 @@ function UserProfile ({username, email , usertype, city}) {
                 <Link to="/edit-profile" className="edit-profile-btn">
                     Edit Profile
                 </Link>
+                <button className="upload-btn" onClick={triggerUpload}>
+                    Upload new Image
+                </button>
             </div>
             {/* display the search feature if the user is admin else does not show */}
             {usertype === 'admin' && (
