@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BookCard from "../components/BookCard";
 import noCover from "../assets/No_Cover.jpg";
 import "./Home.css";
 
 function Home() {
+    const navigate = useNavigate();
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -50,11 +52,8 @@ function Home() {
 
     const isValidImageValue = (value) => {
         if (!value || typeof value !== "string") return false;
-
         const trimmed = value.trim();
-
         if (!trimmed) return false;
-
         return (
             trimmed.startsWith("http://") ||
             trimmed.startsWith("https://") ||
@@ -100,10 +99,7 @@ function Home() {
                         className="book-modal"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <button
-                            className="close-btn"
-                            onClick={closeModal}
-                        >
+                        <button className="close-btn" onClick={closeModal}>
                             ×
                         </button>
 
@@ -112,9 +108,7 @@ function Home() {
                                 src={getImageSrc(selectedBook.image)}
                                 alt={selectedBook.title}
                                 className="book-modal-image"
-                                onError={(e) => {
-                                    e.target.src = noCover;
-                                }}
+                                onError={(e) => { e.target.src = noCover; }}
                             />
                         </div>
 
@@ -128,24 +122,26 @@ function Home() {
                             <div className="modal-description-block">
                                 <h3>Description</h3>
                                 <p>
-                                    {selectedBook.description ||
-                                        "No description available."}
+                                    {selectedBook.description || "No description available."}
                                 </p>
                             </div>
 
                             <p className={selectedBook.borrowed ? "modal-borrowed borrowed" : "modal-borrowed available"}>
-                                Status:{" "}
-                                {selectedBook.borrowed
-                                    ? "Borrowed"
-                                    : "Available"}
+                                Status: {selectedBook.borrowed ? "Borrowed" : "Available"}
                             </p>
 
                             {selectedBook.borrowed && (
                                 <p className="modal-borrowed-by">
-                                    Borrowed By:{" "}
-                                    {selectedBook.borrowedBy || "Unknown"}
+                                    Borrowed By: {selectedBook.borrowedBy || "Unknown"}
                                 </p>
                             )}
+
+                            <button
+                                className="threads-button"
+                                onClick={() => navigate("/threads", { state: { book: selectedBook } })}
+                            >
+                                View Threads
+                            </button>
                         </div>
                     </div>
                 </div>
