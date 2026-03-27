@@ -156,6 +156,7 @@
 }
 
 .siteContainer{
+  width: 100%;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -164,6 +165,11 @@
 .page-content {
   flex: 1;
   display: flex;
+  width: 100%;
+}
+
+.page-content > * {
+  flex: 1;
 }
 
 #spacer {

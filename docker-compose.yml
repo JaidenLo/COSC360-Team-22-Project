@@ -1,22 +1,18 @@
-version: '3.8'
-
 services:
   server:
     build: ./server
-    container_name: server
+    container_name: library-server
     ports:
       - "5000:5000"
     env_file:
-      - .env
+      - ./server/.env
     volumes:
       - ./server:/app
       - /app/node_modules
-    networks:
-      - mern-network
 
   client:
     build: ./client
-    container_name: client
+    container_name: library-client
     ports:
       - "5173:5173"
     depends_on:
@@ -24,9 +20,3 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
-    networks:
-      - mern-network
-
-networks:
-  mern-network:
-    driver: bridge
