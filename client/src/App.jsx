@@ -8,6 +8,8 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import AddBook from "./pages/AddBook";
 import UserSettings from "./pages/UserSettings";
+import BookDescriptions from "./pages/BookDescriptions";
+import Threads from "./pages/Threads";
 import "./App.css";
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
                     <Route path="/profile" element={<Profile user={user} />} />
                     <Route path="/add-book" element={<AddBook/>}/>
                     <Route path="/edit-profile" element={<UserSettings user={user} setUser={setUser}/>}/>
+                    <Route path="/book" element={<BookDescriptions />}/>
+                    <Route path="/threads" element={<Threads user={user} />}/>
                 </Routes>
             </div>
             <Footer />
