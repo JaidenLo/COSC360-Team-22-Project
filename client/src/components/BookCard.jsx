@@ -1,23 +1,64 @@
-import './BookCard.css';
+import noCover from "../assets/No_Cover.jpg";
+import "./BookCard.css";
 
+function BookCard({
+    title,
+    category,
+    image,
+    borrowed,
+    borrowedBy,
+    onClick,
+}) {
+    const isValidImageValue = (value) => {
+        if (!value || typeof value !== "string") return false;
 
-function BookCard({ title, category, image, owner }) {
-    const fallback = "src/assets/No_Cover.jpg"
+        const trimmed = value.trim();
+
+        if (!trimmed) return false;
+
+        return (
+            trimmed.startsWith("http://") ||
+            trimmed.startsWith("https://") ||
+            trimmed.startsWith("/") ||
+            trimmed.startsWith("data:image/")
+        );
+    };
+
+    const imageSrc = isValidImageValue(image) ? image : noCover;
+
     return (
-        <div className="book-card">
+        <div
+            className="book-card"
+            onClick={onClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+                if ((e.key === "Enter" || e.key === " ") && onClick) {
+                    e.preventDefault();
+                    onClick();
+                }
+            }}
+        >
             <div className="book-image">
                 <img
-                    src={image || fallback}
-                    alt={""}
+                    src={imageSrc}
+                    alt={title}
                     onError={(e) => {
-                        e.target.src = fallback;
+                        e.target.src = noCover;
                     }}
-                    style={{width:"100%", height:"100%", objectFit:"cover"}}
-            />
+                />
             </div>
+
             <h3 className="book-title">{title}</h3>
-            <p className="book-category">{category}</p>
-            <p className="OwnerId">{owner ? `Owner: ${owner}` : ""}</p>
+            <p className="book-category">{category || "No category"}</p>
+
+            <p className={`book-status ${borrowed ? "borrowed" : "available"}`}>
+                {borrowed ? "Borrowed" : "Available"}
+            </p>
+
+            {borrowed && borrowedBy && (
+                <p className="borrowed-by">By: {borrowedBy}</p>
+            )}
         </div>
     );
 }
