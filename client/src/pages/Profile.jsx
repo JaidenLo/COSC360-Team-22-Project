@@ -8,7 +8,12 @@ function Profile({ user }) {
 
     return (
         <div className="user-profile">
-            <UserProfile username={user.username} email={user.email} usertype={user.usertype}/>
+            <UserProfile
+                username={user.username}
+                email={user.email}
+                usertype={user.usertype}
+                city={user.city}
+            />
         </div>
     );
 }

@@ -126,8 +126,12 @@ function RegisterForm ({onSuccess}) {
                 errorDiv.style.color = "red";
                 document.querySelector('input[type="email"]').parentNode.appendChild(errorDiv);
             } else if (response.status === 201) {
-                onSuccess({ username: data.name, email: data.email });
-                
+                onSuccess({
+                    username: data.name,
+                    email: data.email,
+                    usertype: data.usertype,
+                    city: ''
+                });
             }
         } catch (error) {
             console.error('Error:', error);

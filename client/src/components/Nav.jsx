@@ -1,24 +1,23 @@
 import "./Nav.css";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 
 function Nav({ user, setUser }) {
     const navigate = useNavigate();
 
     function handleLogout() {
         setUser(null);
-        navigate('/login');
+        navigate("/login");
     }
 
     return (
         <nav className="nav">
             <ul>
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/About">About</Link></li>
-
                 {user ? (
                     <>
+                        <li><Link to="/home">Home</Link></li>
+                        <li><Link to="/add-book">Add Book</Link></li>
                         <li><Link to="/profile">Profile</Link></li>
-                        <li><button onClick={handleLogout}>Logout</button></li>
+                        <li className="logout-item"><button onClick={handleLogout}>Logout</button></li>
                     </>
                 ) : (
                     <>
@@ -30,4 +29,5 @@ function Nav({ user, setUser }) {
         </nav>
     );
 }
+
 export default Nav;

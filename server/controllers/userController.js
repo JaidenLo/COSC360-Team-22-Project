@@ -57,13 +57,18 @@ const loginUser = async (req, res) => {
         }
 
         
-        res.status(200).json({
-            message: 'Login successful',
+        const responseData = {
+            message: "Login successful",
             id: user._id,
             name: user.name,
             email: user.email,
-            usertype: user.usertype
-        });
+            usertype: user.usertype,
+            city: user.city
+        };
+
+        console.log("LOGIN RESPONSE userController.js:", responseData);
+
+        res.status(200).json(responseData);
 
     } catch (error) {
         console.log('Error:', error.message);
@@ -94,5 +99,42 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser, getAllUsers };
+const updateUser = async (req,res) => {
+    try{
+        const {id} = req.params;
+        const {name, email, city, password} = req.body;
+
+        const user = await User.findById(id);
+
+        if (!user){
+            return res.status(404).json({message: 'User not found'});
+        }
+
+        if (name) user.name = name;
+        if (email) user.email = email;
+        if (city) user.city = city;
+
+        if (password && password.trim() !== ""){
+            const hashedPassword = await bcrypt.hash(password,10);
+            user.password = hashedPassword;
+        }
+
+        const updatedUser = await user.save();
+
+        res.status(200).json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            city: updatedUser.city,
+            usertype: updatedUser.usertype
+        });
+    } catch(error){
+        res.status(500).json({
+            message: 'Server Error',
+            error: error.message
+        })
+    }
+}
+
+module.exports = { registerUser, loginUser, getAllUsers, updateUser};
 
