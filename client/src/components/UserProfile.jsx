@@ -2,7 +2,7 @@ import "./UserProfile.css";
 import React, {useRef, useState} from "react";
 import { Link } from "react-router-dom";
 
-function UserProfile ({username, email , usertype, city}) {
+function UserProfile ({username, email , usertype, city, aboutMe}) {
     
     const [avatar, setAvatar] = useState("/src/assets/react.svg");
     const [search, setSearch] = useState("");
@@ -10,9 +10,7 @@ function UserProfile ({username, email , usertype, city}) {
     const [searched, setSearched] = useState(false);
    
     const fileInputRef = useRef(null);
-    async function handleViewProfile(userId){
-        
-    }
+    async function handleViewProfile(userId){}
     
 
     async function handleDelete(userId) {
@@ -37,9 +35,6 @@ function UserProfile ({username, email , usertype, city}) {
 
 
     }
-
-
-
     
     function triggerUpload() {
         fileInputRef.current?.click();
@@ -98,9 +93,14 @@ function UserProfile ({username, email , usertype, city}) {
                 accept="image/*"
             />
 
-            <a href="#" className="about-link">
-                About Me
-            </a>
+            <div className="about-section">
+                <h3>About Me</h3>
+                <p className="about-text">
+                    {aboutMe||"Nothing here yet. Add something in Edit Profile."}
+                </p>
+            </div>
+
+
 
             <div className="profile-actions">
                 <Link to="/edit-profile" className="edit-profile-btn">

@@ -130,7 +130,8 @@ function RegisterForm ({onSuccess}) {
                     username: data.name,
                     email: data.email,
                     usertype: data.usertype,
-                    city: ''
+                    city: '',
+                    aboutMe: '',
                 });
             }
         } catch (error) {

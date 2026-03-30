@@ -54,7 +54,8 @@ function Form ({onSuccess}) {
                     username: data.name, 
                     email: data.email, 
                     city: data.city, 
-                    usertype: data.usertype 
+                    usertype: data.usertype,
+                    aboutMe: data.aboutMe
                 });
             }
     }

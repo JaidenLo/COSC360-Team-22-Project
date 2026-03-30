@@ -13,6 +13,7 @@ function Profile({ user }) {
                 email={user.email}
                 usertype={user.usertype}
                 city={user.city}
+                aboutMe={user.aboutMe}
             />
         </div>
     );
