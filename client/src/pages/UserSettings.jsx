@@ -19,7 +19,7 @@ function UserSettings({ user, setUser }) {
                 throw new Error("User ID is missing");
             }
 
-            const res = await fetch(`http://localhost:5000/api/users/${user._id}`, {
+            const res = await fetch(`http://localhost:5173/api/users/${user._id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
