@@ -4,7 +4,8 @@ const {
     registerUser,
     loginUser,
     getAllUsers,
-    updateUser
+    updateUser,
+    deleteUser
 } = require('../controllers/userController');
 
 console.log('userRoutes file loaded');
@@ -21,5 +22,6 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/search', getAllUsers);
 router.put('/:id', updateUser);
+router.delete('/delete/:id', deleteUser); // delete for admin user
 
 module.exports = router;

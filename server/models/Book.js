@@ -8,7 +8,7 @@ const bookSchema = new mongoose.Schema({
     owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
 }, {
     timestamps: true,
-    collection: 'bookCollection'
+    collection: 'books'
 });
 
 module.exports = mongoose.model('Book', bookSchema);

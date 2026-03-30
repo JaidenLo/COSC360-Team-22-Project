@@ -8,7 +8,36 @@ function UserProfile ({username, email , usertype, city}) {
     const [search, setSearch] = useState("");
     const [users, setUsers] = useState([]);
     const [searched, setSearched] = useState(false);
+   
     const fileInputRef = useRef(null);
+    async function handleViewProfile(userId){
+        
+    }
+    
+
+    async function handleDelete(userId) {
+        if (!window.confirm('Delete this user? Admin')) return;
+
+        fetch(`/api/users/delete/${userId}`, {
+            method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.message === 'User not found') {
+                alert('User not found or already deleted');
+            } else {
+                alert('User deleted successfully');
+                setUsers(users.filter(user => user._id !== userId));
+            }
+        })
+        .catch(err => {
+            console.error('Delete error:', err);
+            alert('Error deleting user');
+        });
+
+
+    }
+
 
 
     
@@ -113,6 +142,9 @@ function UserProfile ({username, email , usertype, city}) {
                                     <th>Email</th>
                                     <th>City</th>
                                     <th>Type</th>
+                                    <th>Type of Action</th>
+                                    <th>Power of Admin !</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -122,10 +154,17 @@ function UserProfile ({username, email , usertype, city}) {
                                         <td>{user.email}</td>
                                         <td>{user.city}</td>
                                         <td>{user.usertype}</td>
+                                        <td><button onCLick = {() => handleViewProfile(user._id)}>View User Profile</button></td>
+                                        <td><button  onClick={() => handleDelete(user._id)}>Delete</button></td>
+                                        
+                                        
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
+                        
+                        
+                        
                     </div>
                 )}
             </div>
