@@ -28,9 +28,9 @@ function UserProfile({ userId, username, email, usertype, city }) {
             .catch(err => console.error(err));
     }, [userId]);
 
-    async function handleDelete(id) {
+    async function handleDelete(id, userId) {
         if (!window.confirm('Delete this user?')) return;
-        fetch(`/api/users/delete/${id}`, { method: 'DELETE' })
+        fetch(`/api/users/delete/${id}?deletedBy=${userId}`, { method: 'DELETE' })
             .then(res => res.json())
             .then(data => {
                 if (data.message === 'User not found') { alert('User not found or already deleted'); }
@@ -158,7 +158,7 @@ function UserProfile({ userId, username, email, usertype, city }) {
                                             <td>{user.email}</td>
                                             <td>{user.city}</td>
                                             <td>{user.usertype}</td>
-                                            <td><button onClick={() => handleDelete(user._id)}>Delete</button></td>
+                                            <td><button onClick={() => handleDelete(user._id, userId)}>Delete</button></td>
                                         </tr>
                                     ))}
                                 </tbody>

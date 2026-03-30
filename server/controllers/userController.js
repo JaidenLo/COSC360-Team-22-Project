@@ -1,6 +1,7 @@
 const User = require('../models/User'); //user data on mongodb 
 const bcrypt = require('bcryptjs');
 
+
 // Register user
 const registerUser = async (req, res) => {
     try {
@@ -136,9 +137,18 @@ const updateUser = async (req,res) => {
     }
 }
 
+//"/api/users/delete/${id}?deletedBy=${userId}"
+
+
 const deleteUser = async(req,res) => {
     try {
-        const {id} = req.params;
+        const {id} = req.params; //userId to be deleted
+        const adminid = req.query.deletedBy;
+
+        const admin = await User.findById(adminid);
+        if (!admin || admin.usertype !== 'admin') {
+            return res.status(403).json({message: 'Unauthorized: Admin ID required'});
+        }
         const user = await User.findByIdAndDelete(id);
 
     
