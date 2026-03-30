@@ -9,6 +9,7 @@ function Profile({ user }) {
     return (
         <div className="user-profile">
             <UserProfile
+                userId={user._id}
                 username={user.username}
                 email={user.email}
                 usertype={user.usertype}

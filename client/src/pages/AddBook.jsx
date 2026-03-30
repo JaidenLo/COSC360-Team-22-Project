@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function AddBook() {
+function AddBook({ user }) {
     const navigate = useNavigate();
 
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
     const [description, setDescription] = useState("");
     const [image, setImage] = useState("");
-
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
@@ -20,14 +19,13 @@ function AddBook() {
         try {
             const response = await fetch("/api/books", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     title,
                     category,
                     description,
-                    image
+                    image,
+                    owner: user?._id || null
                 })
             });
 
@@ -43,9 +41,7 @@ function AddBook() {
             setDescription("");
             setImage("");
 
-            setTimeout(() => {
-                navigate("/home");
-            }, 1000);
+            setTimeout(() => navigate("/home"), 1000);
         } catch (err) {
             setError(err.message);
         }
@@ -58,45 +54,20 @@ function AddBook() {
             <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: "15px" }}>
                     <label>Title</label>
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        style={{ width: "100%", padding: "10px" }}
-                    />
+                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} style={{ width: "100%", padding: "10px", boxSizing: "border-box" }} />
                 </div>
-
                 <div style={{ marginBottom: "15px" }}>
                     <label>Category</label>
-                    <input
-                        type="text"
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        style={{ width: "100%", padding: "10px" }}
-                    />
+                    <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} style={{ width: "100%", padding: "10px", boxSizing: "border-box" }} />
                 </div>
-
                 <div style={{ marginBottom: "15px" }}>
                     <label>Description</label>
-                    <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        rows="5"
-                        style={{ width: "100%", padding: "10px" }}
-                    />
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows="5" style={{ width: "100%", padding: "10px", boxSizing: "border-box" }} />
                 </div>
-
                 <div style={{ marginBottom: "15px" }}>
                     <label>Image URL</label>
-                    <input
-                        type="text"
-                        value={image}
-                        onChange={(e) => setImage(e.target.value)}
-                        placeholder="https://example.com/book.jpg"
-                        style={{ width: "100%", padding: "10px" }}
-                    />
+                    <input type="text" value={image} onChange={(e) => setImage(e.target.value)} placeholder="https://example.com/book.jpg" style={{ width: "100%", padding: "10px", boxSizing: "border-box" }} />
                 </div>
-
                 <button type="submit">Add Book</button>
             </form>
 
