@@ -18,10 +18,16 @@ router.put('/test-put', (req, res) => {
     res.json({ message: 'PUT route works' });
 });
 
+
+
+
+
+
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/search', getAllUsers);
 router.put('/:id', updateUser);
+
 router.delete('/delete/:id', deleteUser); // delete for admin user
 
 module.exports = router;

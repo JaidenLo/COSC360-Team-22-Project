@@ -1,9 +1,72 @@
+/* ---------- SEARCH BAR ---------- */
+.search-bar-container {
+    padding: 1rem;
+    background: white;
+    border-bottom: 1px solid #eee;
+}
+
+.search-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-input-home {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+}
+.search-input-home:focus { border-color: #4CAF50; }
+
+.category-select {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: white;
+    cursor: pointer;
+    outline: none;
+}
+.category-select:focus { border-color: #4CAF50; }
+
+.search-btn-home {
+    padding: 0.6rem 1.4rem;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+.search-btn-home:hover { background: #43a047; }
+.search-btn-home:disabled { background: #aaa; cursor: not-allowed; }
+
+.clear-btn-home {
+    padding: 0.6rem 1rem;
+    background: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+.clear-btn-home:hover { background: #e0e0e0; }
+
+/* ---------- BOOKS GRID ---------- */
 .books-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     padding: 1rem;
-    flex: 1;
     background-color: white;
     align-content: start;
     box-sizing: border-box;
@@ -62,55 +125,19 @@
     gap: 0.75rem;
 }
 
-.book-modal-content h2 {
-    margin: 0;
-    color: #222;
-}
-
-.modal-category {
-    margin: 0;
-    font-size: 0.95rem;
-    color: #777;
-}
+.book-modal-content h2 { margin: 0; color: #222; }
+.modal-category { margin: 0; font-size: 0.95rem; color: #777; }
 
 /* ---------- BORROW STATUS ---------- */
-.modal-borrowed {
-    margin: 0;
-    font-size: 0.95rem;
-    font-weight: 600;
-}
-
-.modal-borrowed.available {
-    color: #1b7f3b; /* green */
-}
-
-.modal-borrowed.borrowed {
-    color: #b42318; /* red */
-}
-
-.modal-borrowed-by {
-    margin: 0;
-    font-size: 0.95rem;
-    color: #555;
-}
+.modal-borrowed { margin: 0; font-size: 0.95rem; font-weight: 600; }
+.modal-borrowed.available { color: #1b7f3b; }
+.modal-borrowed.borrowed  { color: #b42318; }
+.modal-borrowed-by { margin: 0; font-size: 0.95rem; color: #555; }
 
 /* ---------- DESCRIPTION ---------- */
-.modal-description-block {
-    margin-top: 0.5rem;
-}
-
-.modal-description-block h3 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.05rem;
-    color: #222;
-}
-
-.modal-description-block p {
-    margin: 0;
-    line-height: 1.6;
-    color: #444;
-    white-space: pre-wrap;
-}
+.modal-description-block { margin-top: 0.5rem; }
+.modal-description-block h3 { margin: 0 0 0.5rem 0; font-size: 1.05rem; color: #222; }
+.modal-description-block p { margin: 0; line-height: 1.6; color: #444; white-space: pre-wrap; }
 
 /* ---------- CLOSE BUTTON ---------- */
 .close-btn {
@@ -129,34 +156,48 @@
     place-items: center;
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
+.close-btn:hover { background: #e0e0e0; transform: scale(1.05); }
 
-.close-btn:hover {
-    background: #e0e0e0;
-    transform: scale(1.05);
+/* ---------- THREADS BUTTON ---------- */
+.threads-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background 0.2s;
 }
+.threads-button:hover { background-color: #43a047; }
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 900px) {
-    .books-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .book-modal {
-        grid-template-columns: 1fr;
-    }
-
-    .book-modal-image-wrapper {
-        min-height: 280px;
-    }
+    .books-container { grid-template-columns: repeat(2, 1fr); }
+    .book-modal { grid-template-columns: 1fr; }
+    .book-modal-image-wrapper { min-height: 280px; }
 }
 
 @media (max-width: 600px) {
-    .books-container {
-        grid-template-columns: 1fr;
-    }
+    .books-container { grid-template-columns: 1fr; }
+    .book-modal { padding: 1rem; gap: 1rem; }
+    .search-form { flex-direction: column; align-items: stretch; }
+    .category-select { width: 100%; }
+}
 
-    .book-modal {
-        padding: 1rem;
-        gap: 1rem;
-    }
+.category-select {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: white;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+}
+.category-select:focus { border-color: #4CAF50; }
+
+.category-select option {
+    background: white;
+    color: #333;
 }

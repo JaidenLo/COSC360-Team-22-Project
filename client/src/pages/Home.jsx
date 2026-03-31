@@ -4,80 +4,131 @@ import BookCard from "../components/BookCard";
 import noCover from "../assets/No_Cover.jpg";
 import "./Home.css";
 
-function Home() {
+function Home({ user }) {
     const navigate = useNavigate();
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [selectedBook, setSelectedBook] = useState(null);
+    const [query, setQuery] = useState("");
+    const [category, setCategory] = useState("all");
+    const [searching, setSearching] = useState(false);
 
-    useEffect(() => {
-        async function fetchBooks() {
-            try {
-                const response = await fetch("/api/books");
-                const data = await response.json();
+    useEffect(() => { fetchBooks(); }, []);
 
-                if (!response.ok) {
-                    throw new Error(data.message || "Failed to fetch books");
-                }
-
-                setBooks(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
+    async function fetchBooks() {
+        setLoading(true);
+        setError("");
+        try {
+            const response = await fetch("/api/books");
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || "Failed to fetch books");
+            setBooks(data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
+    }
 
+    async function handleSearch(e) {
+        e.preventDefault();
+        setSearching(true);
+        setError("");
+        try {
+            const params = new URLSearchParams();
+            if (query.trim()) params.append("q", query.trim());
+            if (category !== "all") params.append("category", category);
+            const response = await fetch(`/api/books/search?${params.toString()}`);
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || "Search failed");
+            setBooks(data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setSearching(false);
+        }
+    }
+
+    function handleClear() {
+        setQuery("");
+        setCategory("all");
         fetchBooks();
-    }, []);
+    }
 
     useEffect(() => {
         if (!selectedBook) return;
-
-        const handleKeyDown = (e) => {
-            if (e.key === "Escape") {
-                setSelectedBook(null);
-            }
-        };
-
+        const handleKeyDown = (e) => { if (e.key === "Escape") setSelectedBook(null); };
         document.body.style.overflow = "hidden";
         window.addEventListener("keydown", handleKeyDown);
-
-        return () => {
-            document.body.style.overflow = "";
-            window.removeEventListener("keydown", handleKeyDown);
-        };
+        return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", handleKeyDown); };
     }, [selectedBook]);
 
     const isValidImageValue = (value) => {
         if (!value || typeof value !== "string") return false;
         const trimmed = value.trim();
-        if (!trimmed) return false;
-        return (
-            trimmed.startsWith("http://") ||
-            trimmed.startsWith("https://") ||
-            trimmed.startsWith("/") ||
-            trimmed.startsWith("data:image/")
-        );
+        return trimmed.startsWith("http://") || trimmed.startsWith("https://") ||
+               trimmed.startsWith("/") || trimmed.startsWith("data:image/");
     };
 
-    const getImageSrc = (value) => {
-        return isValidImageValue(value) ? value : noCover;
-    };
+    const getImageSrc = (value) => isValidImageValue(value) ? value : noCover;
+    const closeModal = () => setSelectedBook(null);
 
-    const closeModal = () => {
-        setSelectedBook(null);
+    const canEditBook = (book) => {
+        if (!user) return false;
+        if (user.usertype === "admin") return true;
+        return book.owner && book.owner.toString() === user._id?.toString();
     };
-
-    if (loading) return <p>Loading books...</p>;
-    if (error) return <p>{error}</p>;
 
     return (
-        <>
+        <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+
+            {/* Search bar — full width */}
+            <div className="search-bar-container">
+                <form className="search-form" onSubmit={handleSearch}>
+                    <input
+                        type="text"
+                        className="search-input-home"
+                        placeholder="Search by title or description..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                    <select
+                        className="category-select"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                    >
+                        <option value="all">All Categories</option>
+                        <option value="Literature">Literature</option>
+                        <option value="Programming">Programming</option>
+                        <option value="Algorithms">Algorithms</option>
+                        <option value="Math">Math</option>
+                        <option value="Science">Science</option>
+                        <option value="Databases">Databases</option>
+                        <option value="Systems">Systems</option>
+                        <option value="AI">AI</option>
+                        <option value="Web">Web</option>
+                        <option value="Security">Security</option>
+                        <option value="Ethics">Ethics</option>
+                    </select>
+                    <button type="submit" className="search-btn-home" disabled={searching}>
+                        {searching ? "Searching..." : "Search"}
+                    </button>
+                    <button type="button" className="clear-btn-home" onClick={handleClear}>
+                        Clear
+                    </button>
+                </form>
+            </div>
+
+            {loading && <p style={{ textAlign: "center", padding: "2rem", color: "#888" }}>Loading books...</p>}
+            {error && <p style={{ textAlign: "center", color: "red", padding: "1rem" }}>{error}</p>}
+
+            {/* Book grid */}
             <div className="books-container">
-                {books.length === 0 ? (
-                    <p>No books found.</p>
+                {!loading && books.length === 0 ? (
+                    <p style={{ color: "#888", gridColumn: "1/-1", textAlign: "center", padding: "2rem" }}>
+                        No books found.
+                    </p>
                 ) : (
                     books.map((book) => (
                         <BookCard
@@ -93,15 +144,11 @@ function Home() {
                 )}
             </div>
 
+            {/* Modal */}
             {selectedBook && (
                 <div className="modal-overlay" onClick={closeModal}>
-                    <div
-                        className="book-modal"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <button className="close-btn" onClick={closeModal}>
-                            ×
-                        </button>
+                    <div className="book-modal" onClick={(e) => e.stopPropagation()}>
+                        <button className="close-btn" onClick={closeModal}>×</button>
 
                         <div className="book-modal-image-wrapper">
                             <img
@@ -114,16 +161,11 @@ function Home() {
 
                         <div className="book-modal-content">
                             <h2>{selectedBook.title}</h2>
-
-                            <p className="modal-category">
-                                {selectedBook.category || "No category"}
-                            </p>
+                            <p className="modal-category">{selectedBook.category || "No category"}</p>
 
                             <div className="modal-description-block">
                                 <h3>Description</h3>
-                                <p>
-                                    {selectedBook.description || "No description available."}
-                                </p>
+                                <p>{selectedBook.description || "No description available."}</p>
                             </div>
 
                             <p className={selectedBook.borrowed ? "modal-borrowed borrowed" : "modal-borrowed available"}>
@@ -131,22 +173,31 @@ function Home() {
                             </p>
 
                             {selectedBook.borrowed && (
-                                <p className="modal-borrowed-by">
-                                    Borrowed By: {selectedBook.borrowedBy || "Unknown"}
-                                </p>
+                                <p className="modal-borrowed-by">Borrowed By: {selectedBook.borrowedBy || "Unknown"}</p>
                             )}
 
-                            <button
-                                className="threads-button"
-                                onClick={() => navigate("/threads", { state: { book: selectedBook } })}
-                            >
-                                View Threads
-                            </button>
+                            <div style={{ display: "flex", gap: "10px", marginTop: "8px", flexWrap: "wrap" }}>
+                                <button
+                                    className="threads-button"
+                                    onClick={() => navigate("/threads", { state: { book: selectedBook } })}
+                                >
+                                    View Threads
+                                </button>
+                                {canEditBook(selectedBook) && (
+                                    <button
+                                        className="threads-button"
+                                        style={{ backgroundColor: "#1976d2" }}
+                                        onClick={() => { closeModal(); navigate("/edit-book", { state: { book: selectedBook } }); }}
+                                    >
+                                        Edit Book
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 }
 
