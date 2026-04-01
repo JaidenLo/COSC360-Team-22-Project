@@ -1,0 +1,88 @@
+.edit-profile-page {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  text-align: left;
+}
+
+.edit-profile-page h2 {
+  margin: 0 0 1.5rem;
+  font-size: 2rem;
+  color: #222;
+}
+
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.edit-profile-form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.edit-profile-form label {
+  font-weight: 600;
+  color: #333;
+}
+
+.edit-profile-form input,
+.edit-profile-form textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #cfcfcf;
+  border-radius: 10px;
+  background: #fafafa;
+  color: #222;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.edit-profile-form input:focus,
+.edit-profile-form textarea:focus {
+  outline: none;
+  border-color: #666;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
+
+.edit-profile-form textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.edit-profile-form button {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  padding: 0.85rem 1.4rem;
+  border: none;
+  border-radius: 10px;
+  background: #333;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.edit-profile-form button:hover {
+  background: #111;
+}
+
+.edit-profile-form button:active {
+  transform: translateY(1px);
+}

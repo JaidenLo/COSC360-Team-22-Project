@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./UserSettings.css";
 
 function UserSettings({ user, setUser }) {
     const [username, setUsername] = useState(user?.username || "");

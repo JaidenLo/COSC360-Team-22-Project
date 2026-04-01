@@ -2,7 +2,7 @@ import "./UserProfile.css";
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-function UserProfile({ userId, username, email, usertype, city }) {
+function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
     const navigate = useNavigate();
     const [avatar, setAvatar] = useState("/src/assets/react.svg");
     const [search, setSearch] = useState("");

@@ -115,7 +115,7 @@ function RegisterForm ({onSuccess}) {
             const response = await fetch('/api/users/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password, city })
+                body: JSON.stringify({ username, email, password, city})
             });
             const data = await response.json();
             if (response.status === 400) {
