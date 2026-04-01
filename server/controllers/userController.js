@@ -83,13 +83,13 @@ const getAllUsers = async (req, res) => {
         const { search } = req.query;
 
         
-        const allUsers = await User.find().select('-password');
+        const allUsers = await User.find({ usertype: 'user' }).select('-password');
 
        
         let users = allUsers;
         if (search) {
             users = allUsers.filter(user =>
-                user.name.toLowerCase().trim() === search.toLowerCase().trim()
+                user.name.toLowerCase().trim() === search.toLowerCase().trim()  
             );
         }
 
