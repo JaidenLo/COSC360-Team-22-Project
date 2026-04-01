@@ -15,17 +15,10 @@ export default function Threads({ user }) {
 
     useEffect(() => {
         if (!book?._id) return;
-
         fetch(`/api/threads/${book._id}`)
             .then((res) => res.json())
-            .then((data) => {
-                setPosts(data);
-                setLoading(false);
-            })
-            .catch(() => {
-                setError('Failed to load threads.');
-                setLoading(false);
-            });
+            .then((data) => { setPosts(data); setLoading(false); })
+            .catch(() => { setError('Failed to load threads.'); setLoading(false); });
     }, [book?._id]);
 
     if (!book) {
@@ -35,18 +28,17 @@ export default function Threads({ user }) {
     const handlePostSubmit = async (e) => {
         e.preventDefault();
         if (!newPost.trim()) return;
-
         try {
             const res = await fetch('/api/threads', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     bookId: book._id,
+                    userId: user?._id || null,
                     username: user?.username || 'Guest',
                     content: newPost,
                 }),
             });
-
             const saved = await res.json();
             setPosts([saved, ...posts]);
             setNewPost('');
@@ -57,27 +49,16 @@ export default function Threads({ user }) {
 
     return (
         <div className="thread-page-container">
-            <button className="back-button" onClick={() => navigate('/home')}>
-                ← Back to Book
-            </button>
+            <button className="back-button" onClick={() => navigate('/home')}>← Back to Books</button>
             <h1 className="thread-title">{book.title} — Threads</h1>
-
             <div className="post-form">
-                <textarea
-                    placeholder="Write a reply..."
-                    value={newPost}
-                    onChange={(e) => setNewPost(e.target.value)}
-                />
+                <textarea placeholder="Write a reply..." value={newPost} onChange={(e) => setNewPost(e.target.value)} />
                 <button onClick={handlePostSubmit}>Post</button>
             </div>
-
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {loading && <p>Loading threads...</p>}
-
             <div className="posts-container">
-                {!loading && posts.length === 0 && (
-                    <p style={{ color: '#888' }}>No replies yet. Be the first!</p>
-                )}
+                {!loading && posts.length === 0 && <p style={{ color: '#888' }}>No replies yet. Be the first!</p>}
                 {posts.map((post) => (
                     <div className="post" key={post._id}>
                         <div className="post-header">

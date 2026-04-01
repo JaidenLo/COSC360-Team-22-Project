@@ -7,8 +7,8 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import AddBook from "./pages/AddBook";
+import EditBook from "./pages/EditBook";
 import UserSettings from "./pages/UserSettings";
-import BookDescriptions from "./pages/BookDescriptions";
 import Threads from "./pages/Threads";
 import "./App.css";
 
@@ -23,12 +23,12 @@ function App() {
                     <Route path="/" element={<Navigate to="/login" replace />} />
                     <Route path="/login" element={<Login onSuccess={setUser} />} />
                     <Route path="/register" element={<Register onSuccess={setUser} />} />
-                    <Route path="/home" element={<Home />} />
+                    <Route path="/home" element={<Home user={user} />} />
                     <Route path="/profile" element={<Profile user={user} />} />
-                    <Route path="/add-book" element={<AddBook/>}/>
-                    <Route path="/edit-profile" element={<UserSettings user={user} setUser={setUser}/>}/>
-                    <Route path="/book" element={<BookDescriptions />}/>
-                    <Route path="/threads" element={<Threads user={user} />}/>
+                    <Route path="/add-book" element={<AddBook user={user} />} />
+                    <Route path="/edit-book" element={<EditBook user={user} />} />
+                    <Route path="/edit-profile" element={<UserSettings user={user} setUser={setUser} />} />
+                    <Route path="/threads" element={<Threads user={user} />} />
                 </Routes>
             </div>
             <Footer />
