@@ -122,7 +122,6 @@ function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
             </div>
 
 
-
             <div className="profile-actions">
                 <Link to="/edit-profile" className="edit-profile-btn">Edit Profile</Link>
                 <button className="upload-btn" onClick={triggerUpload}>Upload Image</button>

@@ -21,6 +21,10 @@
     font-size: 0.95rem;
     outline: none;
 }
+.search-input-home::placeholder {
+    color:#fff;
+}
+
 .search-input-home:focus { border-color: #4CAF50; }
 
 .category-select {
@@ -70,6 +74,15 @@
     background-color: white;
     align-content: start;
     box-sizing: border-box;
+}
+
+/* ---------- BOOKS CARD ---------- */
+.book-card .book-title {
+    color:#222;
+}
+
+.book-card .book-category {
+    color: #444;
 }
 
 /* ---------- MODAL OVERLAY ---------- */
