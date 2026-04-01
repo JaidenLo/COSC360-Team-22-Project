@@ -2,7 +2,9 @@ const Book = require('../models/Book');
 
 const getAllBooks = async (req, res) => {
     try {
-        const books = await Book.find().sort({ createdAt: -1 });
+        const books = await Book.find()
+            .populate("borrowedBy", "name email")
+            .sort({ createdAt: -1 });
         res.status(200).json(books);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
@@ -97,4 +99,71 @@ const deleteBook = async (req, res) => {
     }
 };
 
-module.exports = { getAllBooks, searchBooks, getBooksByOwner, createBook, updateBook, deleteBook };
+const borrowBook = async (req, res) => {
+    try{
+        const { id } = req.params;
+        const { userId } = req.body;
+
+        const book = await Book.findById(id);
+
+        if(!book) {
+            return res.status(404).json({ message: 'Book not found'});
+        }
+        if(book.borrowed){
+            return res.status(400).json({ message: 'Book is already borrowed'});
+        }
+        
+        book.borrowed = true;
+        book.borrowedBy = userId;
+
+        await book.save();
+
+        res.json({ message: 'Book borrowed successfully', book});
+    } catch (error){
+        res.status(500).json({message: 'Server Error', error:error.message});
+    }
+};
+
+const returnBook = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { userId } = req.body;
+
+        const book = await Book.findById(id);
+
+        if (!book) {
+            return res.status(404).json({ message: 'Book not found' });
+        }
+
+        if (!book.borrowed) {
+            return res.status(400).json({ message: 'Book is not currently borrowed' });
+        }
+
+        if (book.borrowedBy && book.borrowedBy.toString() !== userId){
+            return res.status(403).json({ message: 'You cannot return a book borrowed by another user' });
+        }
+
+        book.borrowed = false;
+        book.borrowedBy = null;
+
+        await book.save();
+
+        res.json({ message: 'Book returned successfully', book });
+    } catch(error){
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+const getBorrowedBooksByUser = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const books = await Book.find({ borrowed: true, borrowedBy: userId });
+
+        res.json(books);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+module.exports = { getAllBooks, searchBooks, getBooksByOwner, createBook, updateBook, deleteBook, borrowBook, returnBook, getBorrowedBooksByUser};

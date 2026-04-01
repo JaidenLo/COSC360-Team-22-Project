@@ -171,6 +171,23 @@
 }
 .threads-button:hover { background-color: #43a047; }
 
+/* ---------- BORROW BUTTON ---------- */
+.borrow-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+
+.borrow-button.borrowed {
+    background-color: red;
+    cursor: not-allowed;
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 900px) {
     .books-container { grid-template-columns: repeat(2, 1fr); }
