@@ -13,21 +13,33 @@ import Threads from "./pages/Threads";
 import "./App.css";
 
 function App() {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(() => {
+        const saved = localStorage.getItem('user');
+        return saved ? JSON.parse(saved) : null;
+    });
+
+    function handleSetUser(userData) {
+        if (userData) {
+            localStorage.setItem('user', JSON.stringify(userData));
+        } else {
+            localStorage.removeItem('user');
+        }
+        setUser(userData);
+    }
 
     return (
         <div className="siteContainer">
-            <Nav user={user} setUser={setUser} />
+            <Nav user={user} setUser={handleSetUser} />
             <div className="page-content">
                 <Routes>
                     <Route path="/" element={<Navigate to="/login" replace />} />
-                    <Route path="/login" element={<Login onSuccess={setUser} />} />
-                    <Route path="/register" element={<Register onSuccess={setUser} />} />
+                    <Route path="/login" element={<Login onSuccess={handleSetUser} />} />
+                    <Route path="/register" element={<Register onSuccess={handleSetUser} />} />
                     <Route path="/home" element={<Home user={user} />} />
                     <Route path="/profile" element={<Profile user={user} />} />
                     <Route path="/add-book" element={<AddBook user={user} />} />
                     <Route path="/edit-book" element={<EditBook user={user} />} />
-                    <Route path="/edit-profile" element={<UserSettings user={user} setUser={setUser} />} />
+                    <Route path="/edit-profile" element={<UserSettings user={user} setUser={handleSetUser} />} />
                     <Route path="/threads" element={<Threads user={user} />} />
                 </Routes>
             </div>
