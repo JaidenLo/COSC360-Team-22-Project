@@ -2,7 +2,7 @@ import "./UserProfile.css";
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-function UserProfile({ userId, username, email, usertype, city }) {
+function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
     const navigate = useNavigate();
     const [avatar, setAvatar] = useState("/src/assets/react.svg");
     const [search, setSearch] = useState("");
@@ -10,6 +10,7 @@ function UserProfile({ userId, username, email, usertype, city }) {
     const [searched, setSearched] = useState(false);
     const [activeThreads, setActiveThreads] = useState([]);
     const [myBooks, setMyBooks] = useState([]);
+    const [borrowedBooks, setBorrowedBooks] = useState([]);
     const fileInputRef = useRef(null);
 
     useEffect(() => {
@@ -27,6 +28,36 @@ function UserProfile({ userId, username, email, usertype, city }) {
             .then(data => { if (Array.isArray(data)) setActiveThreads(data); })
             .catch(err => console.error(err));
     }, [userId]);
+
+    useEffect(() => {
+        if (!userId) return;
+        fetch(`/api/books/borrowed/${userId}`)
+            .then(res => res.json())
+            .then(data => { if (Array.isArray(data)) setBorrowedBooks(data); })
+            .catch(err => console.error(err));
+    }, [userId]);
+
+    function handleReturn(bookId) {
+        if (!userId) return;
+
+        fetch(`/api/books/return/${bookId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ userId })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.message === "Book returned successfully") {
+                    fetch(`/api/books/borrowed/${userId}`)
+                        .then(res => res.json())
+                        .then(data => { if (Array.isArray(data)) setBorrowedBooks(data); })
+                        .catch(err => console.error(err));
+                }
+            })
+            .catch(err => console.error(err));
+    }
 
     async function handleDelete(id, userId) {
         if (!window.confirm('Delete this user?')) return;
@@ -73,7 +104,23 @@ function UserProfile({ userId, username, email, usertype, city }) {
                 </div>
             </div>
 
-            <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: "none" }} accept="image/*" />
+            
+
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+                accept="image/*"
+            />
+
+            <div className="about-section">
+                <h3>About Me</h3>
+                <p className="about-text">
+                    {aboutMe||"Nothing here yet. Add something in Edit Profile."}
+                </p>
+            </div>
+
 
             <div className="profile-actions">
                 <Link to="/edit-profile" className="edit-profile-btn">Edit Profile</Link>
@@ -100,6 +147,32 @@ function UserProfile({ userId, username, email, usertype, city }) {
                                 <span className={`status-badge ${book.borrowed ? 'borrowed' : 'available'}`}>
                                     {book.borrowed ? 'Borrowed' : 'Available'}
                                 </span>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {/* Currently Borrowed Books */}
+            <div className="profile-section">
+                <h3 className="section-heading">Borrowed Books</h3>
+                {borrowedBooks.length === 0 ? (
+                    <p className="empty-message">No books currently borrowed.</p>
+                ) : (
+                    <div className="card-list">
+                        {borrowedBooks.map((book) => (
+                            <div key={book._id} className="list-card borrowed-book-card">
+                                <div className="list-card-main">
+                                    <span className="list-card-title">{book.title}</span>
+                                    <span className="list-card-sub">{book.author}</span>
+                                    <button
+                                        className="return-button"
+                                        onClick={() => handleReturn(book._id)}
+                                    >
+                                        Return Book
+                                    </button>
+                                </div>
+                                <span className="status-badge borrowed">Borrowed</span>
                             </div>
                         ))}
                     </div>

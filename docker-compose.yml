@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   server:
     build: ./server
@@ -11,6 +9,7 @@ services:
     volumes:
       - ./server:/app
       - /app/node_modules
+    command: npm run dev
     networks:
       - mern-network
 
@@ -24,6 +23,9 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
+    command: npm run dev -- --host
+    environment:
+    - CHOKIDAR_USEPOLLING=true
     networks:
       - mern-network
 

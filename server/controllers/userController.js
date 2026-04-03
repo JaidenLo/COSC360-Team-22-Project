@@ -9,9 +9,14 @@ const registerUser = async (req, res) => {
 
         // check if user already exists
         
-        const userExists = await User.findOne({ email });
-        if (userExists) {
-            return res.status(400).json({ message: 'User already exists' });
+        const emailExists = await User.findOne({ email });
+        if (emailExists) {
+            return res.status(400).json({ message: 'Email already exists' });
+        }
+
+        const usernameExists = await User.findOne({ name: username });
+        if (usernameExists) {
+            return res.status(400).json({ message: 'Username already exists' });
         }
         
         // hash the password
@@ -24,6 +29,7 @@ const registerUser = async (req, res) => {
             email,
             password: hashedPassword,
             city,
+            aboutMe: "",
             
         });
         //create 201
@@ -32,7 +38,9 @@ const registerUser = async (req, res) => {
             id: user._id,
             name: user.name,
             email: user.email,
-            usertype: user.usertype
+            usertype: user.usertype,
+            city: user.city,
+            aboutMe: user.aboutMe,
         });
 
     } catch (error) {
@@ -64,7 +72,8 @@ const loginUser = async (req, res) => {
             name: user.name,
             email: user.email,
             usertype: user.usertype,
-            city: user.city
+            city: user.city,
+            aboutMe: user.aboutMe,
         };
 
         console.log("LOGIN RESPONSE userController.js:", responseData);
@@ -103,7 +112,7 @@ const getAllUsers = async (req, res) => {
 const updateUser = async (req,res) => {
     try{
         const {id} = req.params;
-        const {name, email, city, password} = req.body;
+        const {name, email, city, password, aboutMe} = req.body;
 
         const user = await User.findById(id);
 
@@ -114,6 +123,8 @@ const updateUser = async (req,res) => {
         if (name) user.name = name;
         if (email) user.email = email;
         if (city) user.city = city;
+        if (typeof aboutMe === "string") user.aboutMe = aboutMe;
+
 
         if (password && password.trim() !== ""){
             const hashedPassword = await bcrypt.hash(password,10);
@@ -127,8 +138,10 @@ const updateUser = async (req,res) => {
             name: updatedUser.name,
             email: updatedUser.email,
             city: updatedUser.city,
-            usertype: updatedUser.usertype
+            usertype: updatedUser.usertype,
+            aboutMe: updatedUser.aboutMe,
         });
+        
     } catch(error){
         res.status(500).json({
             message: 'Server Error',

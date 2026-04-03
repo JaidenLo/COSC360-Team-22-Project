@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import "./UserSettings.css";
 
 function UserSettings({ user, setUser }) {
     const [username, setUsername] = useState(user?.username || "");
     const [email, setEmail] = useState(user?.email || "");
     const [city, setCity] = useState(user?.city || "");
+    const [aboutMe, setAboutMe] = useState(user?.aboutMe || "");
+    const [password, setPassword] = useState("");
 
     console.log("PROFILE USER:", user);
 
@@ -15,19 +18,23 @@ function UserSettings({ user, setUser }) {
         e.preventDefault();
 
         try {
-            if (!user._id) {
+            const userId = user?._id || user?.id;
+
+            if (!userId) {
                 throw new Error("User ID is missing");
             }
 
-            const res = await fetch(`http://localhost:5173/api/users/${user._id}`, {
+            const res = await fetch(`http://localhost:5000/api/users/${userId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    username,
+                    name: username,
                     email,
                     city,
+                    aboutMe,
+                    password,
                 }),
             });
 
@@ -45,15 +52,18 @@ function UserSettings({ user, setUser }) {
                 throw new Error(data.message || "Failed to update profile");
             }
 
-            alert("Profile updated successfully");
+
             setUser({
                 _id: data._id,
+                id: data._id,
                 username: data.name,
                 email: data.email,
                 city: data.city || "",
                 usertype: data.usertype,
+                aboutMe: data.aboutMe || "",
             });
-            
+
+            alert("Profile updated successfully");
         } catch (err) {
             console.error("Update error:", err);
             alert(err.message || "Error updating profile");
@@ -66,7 +76,7 @@ function UserSettings({ user, setUser }) {
 
             <form onSubmit={handleSubmit} className="edit-profile-form">
                 <div>
-                    <label>Username</label>
+                    <label>Username: </label>
                     <input
                         type="text"
                         value={username}
@@ -75,7 +85,7 @@ function UserSettings({ user, setUser }) {
                 </div>
 
                 <div>
-                    <label>Email</label>
+                    <label>Email: </label>
                     <input
                         type="email"
                         value={email}
@@ -84,11 +94,31 @@ function UserSettings({ user, setUser }) {
                 </div>
 
                 <div>
-                    <label>City</label>
+                    <label>City: </label>
                     <input
                         type="text"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
+                    />
+                </div>
+
+                <div className="form-row">
+                    <label>About Me:</label>
+                    <textarea
+                        value={aboutMe}
+                        onChange={(e) => setAboutMe(e.target.value)}
+                        rows="5"
+                        placeholder="Write something about yourself..."
+                    />
+                </div>
+
+                <div className="form-row">
+                    <label>New Password:</label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Leave blank to keep current password"
                     />
                 </div>
 

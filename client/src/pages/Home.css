@@ -21,6 +21,10 @@
     font-size: 0.95rem;
     outline: none;
 }
+.search-input-home::placeholder {
+    color:#fff;
+}
+
 .search-input-home:focus { border-color: #4CAF50; }
 
 .category-select {
@@ -70,6 +74,15 @@
     background-color: white;
     align-content: start;
     box-sizing: border-box;
+}
+
+/* ---------- BOOKS CARD ---------- */
+.book-card .book-title {
+    color:#222;
+}
+
+.book-card .book-category {
+    color: #444;
 }
 
 /* ---------- MODAL OVERLAY ---------- */
@@ -170,6 +183,23 @@
     transition: background 0.2s;
 }
 .threads-button:hover { background-color: #43a047; }
+
+/* ---------- BORROW BUTTON ---------- */
+.borrow-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+
+.borrow-button.borrowed {
+    background-color: red;
+    cursor: not-allowed;
+}
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 900px) {

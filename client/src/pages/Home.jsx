@@ -80,6 +80,30 @@ function Home({ user }) {
         return book.owner && book.owner.toString() === user._id?.toString();
     };
 
+    async function handleBorrow(book) {
+        try {
+            const res = await fetch(`/api/books/borrow/${book._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId: user.id || user._id })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                alert(data.message || 'Failed to borrow book');
+                return;
+            }
+
+            alert('Book borrowed successfully');
+            fetchBooks();
+        } catch (error) {
+            console.error('Borrow error:', error);
+        }
+}
+
     return (
         <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
 
@@ -173,7 +197,7 @@ function Home({ user }) {
                             </p>
 
                             {selectedBook.borrowed && (
-                                <p className="modal-borrowed-by">Borrowed By: {selectedBook.borrowedBy || "Unknown"}</p>
+                                <p className="modal-borrowed-by">Borrowed By: {selectedBook.borrowedBy?.name || "Unknown"}</p>
                             )}
 
                             <div style={{ display: "flex", gap: "10px", marginTop: "8px", flexWrap: "wrap" }}>
@@ -192,6 +216,13 @@ function Home({ user }) {
                                         Edit Book
                                     </button>
                                 )}
+                                <button
+                                    className={`borrow-button ${selectedBook.borrowed ? "borrowed" : ""}`}
+                                    onClick={() => handleBorrow(selectedBook)}
+                                    disabled={selectedBook.borrowed}
+                                >
+                                    {selectedBook.borrowed ? 'Unavailable' : 'Borrow Book'}
+                                </button>
                             </div>
                         </div>
                     </div>

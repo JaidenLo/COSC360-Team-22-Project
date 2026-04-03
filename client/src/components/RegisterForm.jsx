@@ -4,21 +4,30 @@ import "./RegisterForm.css";
 import { useState} from "react";
 
 function RegisterForm ({onSuccess}) {
-        const [username, setUsername] = useState("");
-        const [email, setEmail] = useState("");
-        const [password, setPassword] = useState("");
-        const [loading, setLoading] = useState(false);
-        const [city, setCity] = useState("");
-
-
-
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [city, setCity] = useState("");
 
     //termpory to check if the user input is valid
 
-    function checkUserName(username) {
-        // find it in the database or server 
+    async function checkUserName(username) {
+    try {
+        const res = await fetch(`/api/users/check-username?username=${encodeURIComponent(username)}`);
+
+        if (!res.ok) {
+            console.error("Username check failed:", res.status);
+            return true;
+        }
+
+        const data = await res.json();
+        return data.available;
+    } catch (error) {
+        console.error("Error checking username:", error);
         return true;
     }
+}
 
     function checkPassword(password) {
         // check if the password is at least 5 characters long and contains a number
@@ -35,13 +44,13 @@ function RegisterForm ({onSuccess}) {
        return city.value !== "" && /^[a-zA-Z\s]+$/.test(city.value);
     }
 
-    function checkUserInput(fields){
+    async function checkUserInput(fields){
         let valid = true;
         let username = fields[0];
         let email = fields[1];
         let password = fields[2];
         let city = fields[3];
-        if (!checkUserName(username.value)){
+        if (!(await checkUserName(username.value))){
             valid = false;
             const errorDiv = document.createElement("p");
             errorDiv.className = "error-message";
@@ -115,8 +124,9 @@ function RegisterForm ({onSuccess}) {
             const response = await fetch('/api/users/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password, city })
+                body: JSON.stringify({ username, email, password, city})
             });
+
             const data = await response.json();
             if (response.status === 400) {
                 alert("Error 400");
@@ -130,7 +140,8 @@ function RegisterForm ({onSuccess}) {
                     username: data.name,
                     email: data.email,
                     usertype: data.usertype,
-                    city: ''
+                    city: '',
+                    aboutMe: '',
                 });
             }
         } catch (error) {
