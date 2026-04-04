@@ -2,6 +2,8 @@ const User = require('../models/User'); //user data on mongodb
 const bcrypt = require('bcryptjs');
 
 
+
+
 // Register user
 const registerUser = async (req, res) => {
     try {
@@ -30,6 +32,7 @@ const registerUser = async (req, res) => {
             password: hashedPassword,
             city,
             aboutMe: "",
+            imageLinks: [],
             
         });
         //create 201
@@ -41,6 +44,7 @@ const registerUser = async (req, res) => {
             usertype: user.usertype,
             city: user.city,
             aboutMe: user.aboutMe,
+            imageLink: user.imageLinks,
         });
 
     } catch (error) {
@@ -74,6 +78,7 @@ const loginUser = async (req, res) => {
             usertype: user.usertype,
             city: user.city,
             aboutMe: user.aboutMe,
+            imageLink: user.imageLinks,
         };
 
         console.log("LOGIN RESPONSE userController.js:", responseData);
@@ -175,5 +180,47 @@ const deleteUser = async(req,res) => {
     }
 }
 
-module.exports = { registerUser, loginUser, getAllUsers, updateUser, deleteUser};
+
+const saveImg = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { image } = req.body;
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.imageLinks = [image];
+        await user.save();
+
+        res.status(200).json({
+            message: 'Image uploaded successfully',
+            imagePath: image
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+
+
+const getImgLink = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ imageLinks: user.imageLinks });
+
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+module.exports = { registerUser, loginUser, getAllUsers, updateUser, saveImg, deleteUser, getImgLink };
 

@@ -6,7 +6,10 @@ const {
     loginUser,
     getAllUsers,
     updateUser,
-    deleteUser
+    deleteUser, 
+    saveImg,
+    getImgLink,
+    upload
 } = require('../controllers/userController');
 
 console.log('userRoutes file loaded');
@@ -36,11 +39,19 @@ router.get("/check-username", async (req, res) => {
     }
 });
 
+
+
+
+
+
+// router.get('/check-username', checkking)
+// `/api/users/${userId}/uploadImg`
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/search', getAllUsers);
-router.put('/:id', updateUser);
-
 router.delete('/delete/:id', deleteUser); // delete for admin user
+router.post('/:userId/uploadImg', saveImg);
+router.get('/:userId/image', getImgLink);
 
+router.put('/:id', updateUser);
 module.exports = router;
