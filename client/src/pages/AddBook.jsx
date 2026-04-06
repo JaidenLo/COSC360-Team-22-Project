@@ -11,6 +11,7 @@ function AddBook({ user }) {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
+
     async function handleSubmit(e) {
         e.preventDefault();
         setError("");
@@ -56,9 +57,28 @@ function AddBook({ user }) {
                     <label>Title</label>
                     <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} style={{ width: "100%", padding: "10px", boxSizing: "border-box" }} />
                 </div>
+
                 <div style={{ marginBottom: "15px" }}>
                     <label>Category</label>
-                    <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} style={{ width: "100%", padding: "10px", boxSizing: "border-box" }} />
+                    <select
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        style={{ width: "100%", padding: "10px", boxSizing: "border-box" }}
+                    >
+                        <option value="" disabled>Select a category</option>
+                        <option value="Literature">Literature</option>
+                        <option value="Programming">Programming</option>
+                        <option value="Algorithms">Algorithms</option>
+                        <option value="Math">Math</option>
+                        <option value="Science">Science</option>
+                        <option value="Databases">Databases</option>
+                        <option value="Systems">Systems</option>
+                        <option value="AI">AI</option>
+                        <option value="Web">Web</option>
+                        <option value="Security">Security</option>
+                        <option value="Ethics">Ethics</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
                 <div style={{ marginBottom: "15px" }}>
                     <label>Description</label>

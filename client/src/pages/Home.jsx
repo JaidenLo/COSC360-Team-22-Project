@@ -134,6 +134,7 @@ function Home({ user }) {
                         <option value="Web">Web</option>
                         <option value="Security">Security</option>
                         <option value="Ethics">Ethics</option>
+                        <option value="Other">Other</option>
                     </select>
                     <button type="submit" className="search-btn-home" disabled={searching}>
                         {searching ? "Searching..." : "Search"}
