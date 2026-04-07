@@ -11,6 +11,7 @@ function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
     const [activeThreads, setActiveThreads] = useState([]);
     const [myBooks, setMyBooks] = useState([]);
     const [borrowedBooks, setBorrowedBooks] = useState([]);
+    const [uploadError, setUploadError] = useState('');
     const fileInputRef = useRef(null);
 
 
@@ -86,29 +87,40 @@ function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
     }
 
     function triggerUpload() { fileInputRef.current?.click(); }
+    
     function handleFileChange(e) {
-        const file = e.target.files[0];
-        if (!file) return;
+    const file = e.target.files[0];
+    if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = () => {
-            const base64 = reader.result;
+    if (file.size > 2 * 1024 * 1024) {
+        setUploadError('Image is too large. Please choose an image under 2MB.');
+        e.target.value = '';
+        return;
+    }
+    setUploadError('');
+    const reader = new FileReader();
+    reader.onload = () => {
+        const base64 = reader.result;
 
-            fetch(`/api/users/${userId}/uploadImg`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ image: base64 })
+        fetch(`/api/users/${userId}/uploadImg`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: base64 })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.imagePath) {
+                    setAvatar(data.imagePath);
+                    setUploadError('');
+                } else if (data.message) {
+                    setUploadError(data.message);
+                }
             })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.imagePath) {
-                        setAvatar(data.imagePath);
-                    }
-                })
-                .catch(err => console.error('Upload error:', err));
-        };
-        reader.readAsDataURL(file);
- }
+            .catch(() => setUploadError('Upload failed. Please try again.'));
+    };
+    reader.readAsDataURL(file);
+}
+ 
     function handleSearch(e) {
         e.preventDefault();
         setSearched(true);
@@ -151,12 +163,11 @@ function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
                     {aboutMe||"Nothing here yet. Add something in Edit Profile."}
                 </p>
             </div>
-
-
+        
+            {uploadError && <p className="upload-error">{uploadError}</p>}
             <div className="profile-actions">
                 <Link to="/edit-profile" className="edit-profile-btn">Edit Profile</Link>
                 <button className="upload-btn" onClick={triggerUpload}>Upload Image</button>
-                
             </div>
 
             {/* My Books for Borrow */}

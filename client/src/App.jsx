@@ -12,6 +12,23 @@ import UserSettings from "./pages/UserSettings";
 import Threads from "./pages/Threads";
 import "./App.css";
 
+// Redirects to /login if user is not logged in
+function ProtectedRoute({ user, children }) {
+    if (!user) return <Navigate to="/login" replace />;
+    return children;
+}
+
+// 404 page
+function NotFound() {
+    return (
+        <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+            <h1 style={{ fontSize: '4rem', margin: '0' }}>404</h1>
+            <p style={{ fontSize: '1.2rem', color: '#666' }}>Page not found.</p>
+            <a href="/home" style={{ color: '#4CAF50', fontSize: '1rem' }}>← Back to Home</a>
+        </div>
+    );
+}
+
 function App() {
     const [user, setUser] = useState(() => {
         const saved = localStorage.getItem('user');
@@ -32,15 +49,41 @@ function App() {
             <Nav user={user} setUser={handleSetUser} />
             <div className="page-content">
                 <Routes>
+                    {/* Public routes */}
                     <Route path="/" element={<Navigate to="/login" replace />} />
                     <Route path="/login" element={<Login onSuccess={handleSetUser} />} />
                     <Route path="/register" element={<Register onSuccess={handleSetUser} />} />
                     <Route path="/home" element={<Home user={user} />} />
-                    <Route path="/profile" element={<Profile user={user} />} />
-                    <Route path="/add-book" element={<AddBook user={user} />} />
-                    <Route path="/edit-book" element={<EditBook user={user} />} />
-                    <Route path="/edit-profile" element={<UserSettings user={user} setUser={handleSetUser} />} />
-                    <Route path="/threads" element={<Threads user={user} />} />
+
+                    {/* Protected routes, now require login */}
+                    <Route path="/profile" element={
+                        <ProtectedRoute user={user}>
+                            <Profile user={user} />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/add-book" element={
+                        <ProtectedRoute user={user}>
+                            <AddBook user={user} />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/edit-book" element={
+                        <ProtectedRoute user={user}>
+                            <EditBook user={user} />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/edit-profile" element={
+                        <ProtectedRoute user={user}>
+                            <UserSettings user={user} setUser={handleSetUser} />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/threads" element={
+                        <ProtectedRoute user={user}>
+                            <Threads user={user} />
+                        </ProtectedRoute>
+                    } />
+
+                    {/* 404 catch-all */}
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </div>
             <Footer />

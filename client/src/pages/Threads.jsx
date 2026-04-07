@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import defaultpfp from '../assets/react.svg';
 import '../components/ThreadsPage.css';
@@ -12,13 +12,32 @@ export default function Threads({ user }) {
     const [newPost, setNewPost] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const pollingRef = useRef(null);
 
-    useEffect(() => {
+    function fetchPosts() {
         if (!book?._id) return;
         fetch(`/api/threads/${book._id}`)
             .then((res) => res.json())
-            .then((data) => { setPosts(data); setLoading(false); })
-            .catch(() => { setError('Failed to load threads.'); setLoading(false); });
+            .then((data) => {
+                setPosts(data);
+                setLoading(false);
+            })
+            .catch(() => {
+                setError('Failed to load threads.');
+                setLoading(false);
+            });
+    }
+
+    // initial fetch
+    useEffect(() => {
+        fetchPosts();
+    }, [book?._id]);
+
+    // poll the db every 5 seconds for new posts
+    useEffect(() => {
+        if (!book?._id) return;
+        pollingRef.current = setInterval(fetchPosts, 5000);
+        return () => clearInterval(pollingRef.current);
     }, [book?._id]);
 
     if (!book) {
@@ -52,13 +71,19 @@ export default function Threads({ user }) {
             <button className="back-button" onClick={() => navigate('/home')}>← Back to Books</button>
             <h1 className="thread-title">{book.title} — Threads</h1>
             <div className="post-form">
-                <textarea placeholder="Write a reply..." value={newPost} onChange={(e) => setNewPost(e.target.value)} />
+                <textarea
+                    placeholder="Write a reply..."
+                    value={newPost}
+                    onChange={(e) => setNewPost(e.target.value)}
+                />
                 <button onClick={handlePostSubmit}>Post</button>
             </div>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {loading && <p>Loading threads...</p>}
             <div className="posts-container">
-                {!loading && posts.length === 0 && <p style={{ color: '#888' }}>No replies yet. Be the first!</p>}
+                {!loading && posts.length === 0 && (
+                    <p style={{ color: '#888' }}>No replies yet. Be the first!</p>
+                )}
                 {posts.map((post) => (
                     <div className="post" key={post._id}>
                         <div className="post-header">
