@@ -123,17 +123,17 @@ function Home({ user }) {
                         onChange={(e) => setCategory(e.target.value)}
                     >
                         <option value="all">All Categories</option>
-                        <option value="Literature">Literature</option>
-                        <option value="Programming">Programming</option>
-                        <option value="Algorithms">Algorithms</option>
-                        <option value="Math">Math</option>
-                        <option value="Science">Science</option>
-                        <option value="Databases">Databases</option>
-                        <option value="Systems">Systems</option>
-                        <option value="AI">AI</option>
-                        <option value="Web">Web</option>
-                        <option value="Security">Security</option>
-                        <option value="Ethics">Ethics</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Science Fiction">Science Fiction</option>
+                        <option value="Mystery">Mystery / Thriller</option>
+                        <option value="Classic">Classic</option>
+                        <option value="Non-Fiction">Non-Fiction</option>
+                        <option value="Self-Help">Self-Help</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Biography">Biography</option>
+                        <option value="History">History</option>
+                        <option value="Technology">Technology</option>
                         <option value="Other">Other</option>
                     </select>
                     <button type="submit" className="search-btn-home" disabled={searching}>
