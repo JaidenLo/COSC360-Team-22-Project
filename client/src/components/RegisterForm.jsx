@@ -117,7 +117,7 @@ function RegisterForm ({onSuccess}) {
             
         });
 
-        if (!checkUserInput(fields)) return;
+        if (!(await checkUserInput(fields))) return;
 
         setLoading(true);
         try {
@@ -140,7 +140,7 @@ function RegisterForm ({onSuccess}) {
                     username: data.name,
                     email: data.email,
                     usertype: data.usertype,
-                    city: '',
+                    city: data.city,
                     aboutMe: '',
                 });
             }
