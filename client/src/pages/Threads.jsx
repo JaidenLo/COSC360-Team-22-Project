@@ -69,7 +69,7 @@ export default function Threads({ user }) {
     return (
         <div className="thread-page-container">
             <button className="back-button" onClick={() => navigate('/home')}>← Back to Books</button>
-            <h1 className="thread-title">{book.title} — Threads</h1>
+            <h1 className="thread-title">{book.title} - Threads</h1>
             <div className="post-form">
                 <textarea
                     placeholder="Write a reply..."
@@ -84,10 +84,12 @@ export default function Threads({ user }) {
                 {!loading && posts.length === 0 && (
                     <p style={{ color: '#888' }}>No replies yet. Be the first!</p>
                 )}
+
+                
                 {posts.map((post) => (
                     <div className="post" key={post._id}>
                         <div className="post-header">
-                            <img src={defaultpfp} alt={post.username} className="profile-image" />
+                            <img src={post.profileImage || defaultpfp} alt={post.username} className="profile-image" />
                             <div className="post-info">
                                 <h3 className="username">{post.username}</h3>
                                 <p className="post-time">{new Date(post.createdAt).toLocaleString()}</p>

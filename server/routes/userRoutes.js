@@ -24,7 +24,17 @@ router.get('/check-username', async (req, res) => {
     }
 });
 
-router.post('/register', upload.single('avatar'), validateRegister, registerUser);
+function checkConfirmPassword(req, res, next) {
+    const { password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+        return res.status(400).json({ message: "Passwords do not match" });
+    }
+
+    next();
+}
+
+router.post('/register', upload.single('avatar'), checkConfirmPassword, validateRegister, registerUser);
 router.post('/login', loginUser);
 router.get('/search', getAllUsers);
 router.delete('/delete/:id', deleteUser);

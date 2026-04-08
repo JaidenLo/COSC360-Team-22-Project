@@ -7,6 +7,7 @@ function RegisterForm ({onSuccess}) {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [city, setCity] = useState("");
 
@@ -49,7 +50,9 @@ function RegisterForm ({onSuccess}) {
         let username = fields[0];
         let email = fields[1];
         let password = fields[2];
-        let city = fields[3];
+        let confirmPassword = fields[3];
+        let city = fields[4];
+          
         if (!(await checkUserName(username.value))){
             valid = false;
             const errorDiv = document.createElement("p");
@@ -87,6 +90,14 @@ function RegisterForm ({onSuccess}) {
             errorDiv.style.color = "red";
             city.parentNode.appendChild(errorDiv);
         }
+        if (password.value !== confirmPassword.value){
+            valid = false;
+            const errorDiv = document.createElement("p");
+            errorDiv.className = "error-message";
+            errorDiv.textContent = "Passwords do not match.";
+            errorDiv.style.color = "red";
+            confirmPassword.parentNode.appendChild(errorDiv);
+}
 
 
         return valid;
@@ -102,7 +113,8 @@ function RegisterForm ({onSuccess}) {
         const fields = [
             document.querySelector('input[type="text"]'), 
             document.querySelector('input[type="email"]'), 
-            document.querySelector('input[type="password"]'),
+            document.querySelectorAll('input[type="password"]')[0],
+            document.querySelectorAll('input[type="password"]')[1],
             document.querySelector('input[name="city"]')
             ];
 
@@ -117,14 +129,14 @@ function RegisterForm ({onSuccess}) {
             
         });
 
-        if (!checkUserInput(fields)) return;
+        if (!(await checkUserInput(fields))) return;
 
         setLoading(true);
         try {
             const response = await fetch('/api/users/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password, city})
+                body: JSON.stringify({ username, email, password, confirmPassword, city})
             });
 
             const data = await response.json();
@@ -164,10 +176,15 @@ function RegisterForm ({onSuccess}) {
 
                     <input type="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
+
                 <div className="form-group">
                     <label>Password</label>
-
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter a passcode" />
+                </div>
+
+                <div className="form-group">
+                <label>Confirm Password</label>
+                <input type="password" placeholder="Type your password again"value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
                 </div>
                 <div className="form-group">
                     <label>City</label>
