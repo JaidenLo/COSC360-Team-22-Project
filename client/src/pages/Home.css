@@ -233,3 +233,50 @@
     .search-form { flex-direction: column; align-items: stretch; }
     .category-select { width: 100%; }
 }
+
+/* ---------- QUEUE ---------- */
+.queue-count {
+    margin: 4px 0 0;
+    font-size: 0.88rem;
+    color: #888;
+}
+
+.queue-reserved-notice {
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: #2e7d32;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 4px 0;
+}
+
+.queue-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: white;
+}
+
+.queue-button.join {
+    background-color: #f57c00;
+}
+.queue-button.join:hover {
+    background-color: #e65100;
+}
+
+.queue-button.leave {
+    background-color: #757575;
+}
+.queue-button.leave:hover {
+    background-color: #616161;
+}
+
+.queue-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
