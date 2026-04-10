@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import BookCard from "../components/BookCard";
 import noCover from "../assets/No_Cover.jpg";
 import "./Home.css";
 
 function Home({ user }) {
     const navigate = useNavigate();
+    const location = useLocation();
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -13,8 +14,24 @@ function Home({ user }) {
     const [query, setQuery] = useState("");
     const [category, setCategory] = useState("all");
     const [searching, setSearching] = useState(false);
+    const [queueLoading, setQueueLoading] = useState(false);
+
+    const userId = user?._id || user?.id || null;
 
     useEffect(() => { fetchBooks(); }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchBooks();
+        }, 10000);
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        if (location.state?.openBook) {
+            setSelectedBook(location.state.openBook);
+        }
+    }, []);
 
     async function fetchBooks() {
         setLoading(true);
@@ -24,6 +41,10 @@ function Home({ user }) {
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || "Failed to fetch books");
             setBooks(data);
+            if (selectedBook) {
+                const updated = data.find(b => b._id === selectedBook._id);
+                if (updated) setSelectedBook(updated);
+            }
         } catch (err) {
             setError(err.message);
         } finally {
@@ -80,34 +101,90 @@ function Home({ user }) {
         return book.owner && book.owner.toString() === user._id?.toString();
     };
 
+    const isInQueue = (book) => {
+        if (!userId || !book.queue) return false;
+        return book.queue.some(q => q.userId?.toString() === userId.toString());
+    };
+
+    const isReservedForMe = (book) => {
+        if (!userId || !book.reservedFor?.userId) return false;
+        return book.reservedFor.userId.toString() === userId.toString();
+    };
+
+    const isBorrowedByMe = (book) => {
+        if (!userId || !book.borrowedBy) return false;
+        const borrowedById = book.borrowedBy?._id?.toString() || book.borrowedBy?.toString();
+        return borrowedById === userId.toString();
+    };
+
+    const reservationTimeLeft = (book) => {
+        if (!book.reservedFor?.expiresAt) return null;
+        const diff = new Date(book.reservedFor.expiresAt) - new Date();
+        if (diff <= 0) return null;
+        const hours = Math.floor(diff / 1000 / 60 / 60);
+        const mins = Math.floor((diff / 1000 / 60) % 60);
+        return `${hours}h ${mins}m`;
+    };
+
     async function handleBorrow(book) {
         try {
             const res = await fetch(`/api/books/borrow/${book._id}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId: user.id || user._id })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId })
             });
-
             const data = await res.json();
-
             if (!res.ok) {
                 alert(data.message || 'Failed to borrow book');
                 return;
             }
-
-            alert('Book borrowed successfully');
-            fetchBooks();
+            alert('Book borrowed successfully!');
+            await fetchBooks();
         } catch (error) {
             console.error('Borrow error:', error);
         }
-}
+    }
+
+    async function handleJoinQueue(book) {
+        if (!userId) { alert('Please log in to join the queue.'); return; }
+        setQueueLoading(true);
+        try {
+            const res = await fetch(`/api/books/queue/${book._id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, username: user?.name || user?.username })
+            });
+            const data = await res.json();
+            if (!res.ok) { alert(data.message || 'Failed to join queue'); return; }
+            await fetchBooks();
+        } catch {
+            alert('Failed to join queue');
+        } finally {
+            setQueueLoading(false);
+        }
+    }
+
+    async function handleLeaveQueue(book) {
+        setQueueLoading(true);
+        try {
+            const res = await fetch(`/api/books/queue/${book._id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId })
+            });
+            const data = await res.json();
+            if (!res.ok) { alert(data.message || 'Failed to leave queue'); return; }
+            await fetchBooks();
+        } catch {
+            alert('Failed to leave queue');
+        } finally {
+            setQueueLoading(false);
+        }
+    }
 
     return (
         <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
 
-            {/* Search bar — full width */}
             <div className="search-bar-container">
                 <form className="search-form" onSubmit={handleSearch}>
                     <input
@@ -148,7 +225,6 @@ function Home({ user }) {
             {loading && <p style={{ textAlign: "center", padding: "2rem", color: "#888" }}>Loading books...</p>}
             {error && <p style={{ textAlign: "center", color: "red", padding: "1rem" }}>{error}</p>}
 
-            {/* Book grid */}
             <div className="books-container">
                 {!loading && books.length === 0 ? (
                     <p style={{ color: "#888", gridColumn: "1/-1", textAlign: "center", padding: "2rem" }}>
@@ -169,7 +245,6 @@ function Home({ user }) {
                 )}
             </div>
 
-            {/* Modal */}
             {selectedBook && (
                 <div className="modal-overlay" onClick={closeModal}>
                     <div className="book-modal" onClick={(e) => e.stopPropagation()}>
@@ -201,6 +276,20 @@ function Home({ user }) {
                                 <p className="modal-borrowed-by">Borrowed By: {selectedBook.borrowedBy?.name || "Unknown"}</p>
                             )}
 
+                            {/* reservation notice */}
+                            {isReservedForMe(selectedBook) && (
+                                <div className="queue-reserved-notice">
+                                     This book is reserved for you! You have {reservationTimeLeft(selectedBook)} to borrow it.
+                                </div>
+                            )}
+
+                            {/* queue info */}
+                            {selectedBook.queue?.length > 0 && (
+                                <p className="queue-count">
+                                    {selectedBook.queue.length} {selectedBook.queue.length === 1 ? 'person' : 'people'} waiting in queue
+                                </p>
+                            )}
+
                             <div style={{ display: "flex", gap: "10px", marginTop: "8px", flexWrap: "wrap" }}>
                                 <button
                                     className="threads-button"
@@ -217,13 +306,36 @@ function Home({ user }) {
                                         Edit Book
                                     </button>
                                 )}
-                                <button
-                                    className={`borrow-button ${selectedBook.borrowed ? "borrowed" : ""}`}
-                                    onClick={() => handleBorrow(selectedBook)}
-                                    disabled={selectedBook.borrowed}
-                                >
-                                    {selectedBook.borrowed ? 'Unavailable' : 'Borrow Book'}
-                                </button>
+
+                                {!selectedBook.borrowed && !selectedBook.reservedFor?.userId && (
+                                    <button className="borrow-button" onClick={() => handleBorrow(selectedBook)}>
+                                        Borrow Book
+                                    </button>
+                                )}
+                                {isReservedForMe(selectedBook) && (
+                                    <button className="borrow-button" onClick={() => handleBorrow(selectedBook)}>
+                                        Borrow Now
+                                    </button>
+                                )}
+                                {selectedBook.borrowed && !isReservedForMe(selectedBook) && !isBorrowedByMe(selectedBook) && userId && (
+                                    isInQueue(selectedBook) ? (
+                                        <button
+                                            className="queue-button leave"
+                                            onClick={() => handleLeaveQueue(selectedBook)}
+                                            disabled={queueLoading}
+                                        >
+                                            Leave Queue
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className="queue-button join"
+                                            onClick={() => handleJoinQueue(selectedBook)}
+                                            disabled={queueLoading}
+                                        >
+                                            Join Queue
+                                        </button>
+                                    )
+                                )}
                             </div>
                         </div>
                     </div>
