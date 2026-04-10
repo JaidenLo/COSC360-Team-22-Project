@@ -69,14 +69,14 @@ function AddBook({ user }) {
                 throw new Error(data.message || "Failed to add book");
             }
 
-            setSuccess("Book added successfully!");
+            setSuccess("✓ Book added successfully!");
             setTitle("");
             setCategory("");
             setDescription("");
             setImageFile(null);
             setImagePreview(null);
 
-            setTimeout(() => navigate("/home"), 1000);
+            setTimeout(() => navigate("/home"), 1500);
         } catch (err) {
             setError(err.message);
         }
@@ -86,6 +86,17 @@ function AddBook({ user }) {
         <div className="add-book-page">
             <div className="add-book-card">
                 <h1 className="add-book-title">Add Book</h1>
+
+                {error && (
+                    <div className="alert alert-error">
+                        ✕ {error}
+                    </div>
+                )}
+                {success && (
+                    <div className="alert alert-success">
+                        {success}
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="add-book-form">
                     <div className="form-group">
@@ -153,9 +164,6 @@ function AddBook({ user }) {
 
                     <button type="submit" className="add-book-button">Add Book</button>
                 </form>
-
-                {error && <p className="message error-message">{error}</p>}
-                {success && <p className="message success-message">{success}</p>}
             </div>
         </div>
     );

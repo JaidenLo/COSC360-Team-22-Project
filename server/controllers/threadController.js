@@ -45,4 +45,23 @@ const createThread = async (req, res) => {
     }
 };
 
-module.exports = { getThreadsByBook, getThreadsByUser, createThread };
+const deleteThread = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { userId } = req.body;
+
+        const thread = await Thread.findById(id);
+        if (!thread) return res.status(404).json({ message: 'Thread not found' });
+
+        if (thread.userId?.toString() !== userId) {
+            return res.status(403).json({ message: 'Unauthorized: you can only delete your own posts' });
+        }
+
+        await Thread.findByIdAndDelete(id);
+        res.status(200).json({ message: 'Thread deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+module.exports = { getThreadsByBook, getThreadsByUser, createThread, deleteThread };

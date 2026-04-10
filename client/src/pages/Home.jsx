@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import BookCard from "../components/BookCard";
 import noCover from "../assets/No_Cover.jpg";
 import "./Home.css";
 
 function Home({ user }) {
     const navigate = useNavigate();
+    const location = useLocation();
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -15,6 +16,12 @@ function Home({ user }) {
     const [searching, setSearching] = useState(false);
 
     useEffect(() => { fetchBooks(); }, []);
+
+    useEffect(() => {
+        if (location.state?.openBook) {
+            setSelectedBook(location.state.openBook);
+        }
+    }, []);
 
     async function fetchBooks() {
         setLoading(true);
@@ -102,7 +109,7 @@ function Home({ user }) {
         } catch (error) {
             console.error('Borrow error:', error);
         }
-}
+    }
 
     return (
         <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
