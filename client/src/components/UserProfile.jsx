@@ -143,7 +143,7 @@ function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
                 <div className="profile-info">
                     <h2 className="profile-name">
                         {username}
-                        {usertype === 'admin' && <span className="admin-tag" onClick={() => {navigate("/admin-dashboard")}}>Admin</span> } 
+                        {usertype === 'admin' && <span className="admin-tag" onClick={() => {navigate("/admin-dashboard")}}>Admin Dashboard</span> } 
                     </h2>
                     <p className="profile-email">{email}</p>
                     <p className="profile-city">{city || "Not set"}</p>
