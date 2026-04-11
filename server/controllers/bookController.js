@@ -6,7 +6,13 @@ const getAllBooks = async (req, res) => {
         const books = await Book.find()
             .populate("borrowedBy", "name email")
             .sort({ createdAt: -1 });
-        res.status(200).json(books);
+
+        const booksWithThreadCount = await Promise.all(books.map(async (book) => {
+            const threadCount = await Thread.countDocuments({ bookId: book._id });
+            return { ...book.toObject(), threadCount };
+        }));
+
+        res.status(200).json(booksWithThreadCount);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
@@ -22,8 +28,7 @@ const searchBooks = async (req, res) => {
                 { description: { $regex: q.trim(), $options: 'i' } },
             ];
         }
-        if (category && category !== 'all') {
-            filter.category = { $regex: category.trim(), $options: 'i' };
+        if (category && category !== 'all') { filter.category = category.trim();
         }
         const books = await Book.find(filter).sort({ createdAt: -1 });
         res.status(200).json(books);

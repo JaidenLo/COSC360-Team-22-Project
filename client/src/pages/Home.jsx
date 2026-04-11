@@ -15,17 +15,19 @@ function Home({ user }) {
     const [category, setCategory] = useState("all");
     const [searching, setSearching] = useState(false);
     const [queueLoading, setQueueLoading] = useState(false);
+    const [sortBy, setSortBy] = useState("newest");
+    const [isFiltered, setIsFiltered] = useState(false);
 
     const userId = user?._id || user?.id || null;
 
     useEffect(() => { fetchBooks(); }, []);
 
     useEffect(() => {
-    const interval = setInterval(() => {
-        fetchBooks(true);
-    }, 5000);
-    return () => clearInterval(interval);
-}, []);
+        const interval = setInterval(() => {
+            if (!isFiltered) fetchBooks(true);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, [isFiltered]);
 
     useEffect(() => {
         if (location.state?.openBook) {
@@ -33,7 +35,7 @@ function Home({ user }) {
         }
     }, []);
 
-        async function fetchBooks(silent = false) {
+    async function fetchBooks(silent = false) {
         if (!silent) setLoading(true);
         setError("");
         try {
@@ -56,6 +58,7 @@ function Home({ user }) {
         e.preventDefault();
         setSearching(true);
         setError("");
+        setIsFiltered(true);
         try {
             const params = new URLSearchParams();
             if (query.trim()) params.append("q", query.trim());
@@ -74,7 +77,42 @@ function Home({ user }) {
     function handleClear() {
         setQuery("");
         setCategory("all");
+        setSortBy("newest");
+        setIsFiltered(false);
         fetchBooks();
+    }
+
+    async function handleCategoryChange(selectedCategory) {
+    setIsFiltered(selectedCategory !== "all");
+    setSearching(true);
+    setError("");
+    try {
+        const params = new URLSearchParams();
+        if (query.trim()) params.append("q", query.trim());
+        if (selectedCategory !== "all") params.append("category", selectedCategory);
+        const response = await fetch(`/api/books/search?${params.toString()}`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Search failed");
+        setBooks(data); 
+        } catch (err) { 
+        setError(err.message);
+        } finally {
+        setSearching(false);
+        }
+    }
+
+    function getSortedBooks() {
+        const sorted = [...books];
+        switch (sortBy) {
+            case "hottest":
+    return sorted.sort((a, b) => (b.threadCount || 0) - (a.threadCount || 0));
+            case "newest":
+                return sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            case "available":
+                return sorted.sort((a, b) => Number(a.borrowed) - Number(b.borrowed));
+            default:
+                return sorted;
+        }
     }
 
     useEffect(() => {
@@ -182,6 +220,8 @@ function Home({ user }) {
         }
     }
 
+    const sortedBooks = getSortedBooks();
+
     return (
         <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
 
@@ -197,7 +237,10 @@ function Home({ user }) {
                     <select
                         className="category-select"
                         value={category}
-                        onChange={(e) => setCategory(e.target.value)}
+                        onChange={(e) => {
+                            setCategory(e.target.value);
+                            handleCategoryChange(e.target.value);
+                        }}
                     >
                         <option value="all">All Categories</option>
                         <option value="Fiction">Fiction</option>
@@ -213,6 +256,15 @@ function Home({ user }) {
                         <option value="Technology">Technology</option>
                         <option value="Other">Other</option>
                     </select>
+                    <select
+                        className="category-select"
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                    >
+                        <option value="newest">Newest</option>
+                        <option value="hottest">Hottest Threads</option>
+                        <option value="available">Available First</option>
+                    </select>
                     <button type="submit" className="search-btn-home" disabled={searching}>
                         {searching ? "Searching..." : "Search"}
                     </button>
@@ -226,12 +278,12 @@ function Home({ user }) {
             {error && <p style={{ textAlign: "center", color: "red", padding: "1rem" }}>{error}</p>}
 
             <div className="books-container">
-                {!loading && books.length === 0 ? (
+                {!loading && sortedBooks.length === 0 ? (
                     <p style={{ color: "#888", gridColumn: "1/-1", textAlign: "center", padding: "2rem" }}>
                         No books found.
                     </p>
                 ) : (
-                    books.map((book) => (
+                    sortedBooks.map((book) => (
                         <BookCard
                             key={book._id}
                             title={book.title}
@@ -274,7 +326,7 @@ function Home({ user }) {
 
                             {selectedBook.reservedFor?.userId && !isReservedForMe(selectedBook) && (
                                 <p className="modal-reserved">
-                                    Reserved for another user
+                                     Reserved for another user
                                 </p>
                             )}
 
@@ -282,17 +334,15 @@ function Home({ user }) {
                                 <p className="modal-borrowed-by">Borrowed By: {selectedBook.borrowedBy?.name || "Unknown"}</p>
                             )}
 
-                            {/* reservation notice */}
                             {isReservedForMe(selectedBook) && (
                                 <div className="queue-reserved-notice">
-                                     This book is reserved for you! You have {reservationTimeLeft(selectedBook)} to borrow it.
+                                    This book is reserved for you! You have {reservationTimeLeft(selectedBook)} to borrow it.
                                 </div>
                             )}
 
-                            {/* queue info */}
                             {selectedBook.queue?.length > 0 && (
                                 <p className="queue-count">
-                                    {selectedBook.queue.length} {selectedBook.queue.length === 1 ? 'person' : 'people'} waiting in queue
+                                     {selectedBook.queue.length} {selectedBook.queue.length === 1 ? 'person' : 'people'} waiting in queue
                                 </p>
                             )}
 

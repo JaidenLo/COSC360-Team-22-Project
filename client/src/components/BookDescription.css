@@ -40,7 +40,7 @@
   padding: 15px 30px;
   font-size: 18px;
   margin-right: 15px;
-  background-color: #4CAF50;
+  background-color: #4a7c59;
   color: white;
   border: none;
   border-radius: 5px;
@@ -48,7 +48,7 @@
 }
 
 .borrow-button:hover, .threads-button:hover {
-  background-color: #45a049;
+  background-color: #3d6b4a;
 }
 
 .description {
