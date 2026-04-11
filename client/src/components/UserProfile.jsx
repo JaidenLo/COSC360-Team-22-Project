@@ -37,7 +37,7 @@ function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
         }
     };
 
-    const interval = setInterval(checkUserExists, 10000);
+    const interval = setInterval(checkUserExists, 500);
     return () => clearInterval(interval);
 
 }, [userId]);
