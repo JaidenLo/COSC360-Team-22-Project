@@ -14,6 +14,7 @@ export default function Threads({ user }) {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [avatars, setAvatars] = useState({});
+    const [collapsed, setCollapsed] = useState({});
     const pollingRef = useRef(null);
 
     const userId = user?._id || user?.id || null;
@@ -39,19 +40,13 @@ export default function Threads({ user }) {
             try {
                 const res = await fetch(`/api/users/${id}/image`);
                 const data = await res.json();
-                if (data.imageLinks?.[0]) {
-                    results[id] = data.imageLinks[0];
-                }
-            } catch {
-                // keep default
-            }
+                if (data.imageLinks?.[0]) results[id] = data.imageLinks[0];
+            } catch { }
         }));
         setAvatars(results);
     }
 
-    useEffect(() => {
-        fetchPosts();
-    }, [book?._id]);
+    useEffect(() => { fetchPosts(); }, [book?._id]);
 
     useEffect(() => {
         if (!book?._id) return;
@@ -59,7 +54,6 @@ export default function Threads({ user }) {
         return () => clearInterval(pollingRef.current);
     }, [book?._id]);
 
-    // auto-clear success alert after 3 seconds
     useEffect(() => {
         if (!success) return;
         const t = setTimeout(() => setSuccess(''), 3000);
@@ -68,6 +62,10 @@ export default function Threads({ user }) {
 
     if (!book) {
         return <p>No book selected. <button onClick={() => navigate('/home')}>Go back</button></p>;
+    }
+
+    function toggleCollapse(postId) {
+        setCollapsed(prev => ({ ...prev, [postId]: !prev[postId] }));
     }
 
     const handlePostSubmit = async (e) => {
@@ -155,17 +153,28 @@ export default function Threads({ user }) {
                                 <h3 className="username">{post.username}</h3>
                                 <p className="post-time">{new Date(post.createdAt).toLocaleString()}</p>
                             </div>
-                            {userId && post.userId?.toString() === userId?.toString() && (
+                            <div className="post-actions">
                                 <button
-                                    className="delete-post-btn"
-                                    onClick={() => handleDelete(post._id)}
-                                    title="Delete post"
+                                    className="collapse-btn"
+                                    onClick={() => toggleCollapse(post._id)}
+                                    title={collapsed[post._id] ? 'Expand' : 'Collapse'}
                                 >
-                                    🗑️
+                                    {collapsed[post._id] ? '▸ Show' : '▾ Hide'}
                                 </button>
-                            )}
+                                {userId && post.userId?.toString() === userId?.toString() && (
+                                    <button
+                                        className="delete-post-btn"
+                                        onClick={() => handleDelete(post._id)}
+                                        title="Delete post"
+                                    >
+                                        🗑️
+                                    </button>
+                                )}
+                            </div>
                         </div>
-                        <p className="post-content">{post.content}</p>
+                        {!collapsed[post._id] && (
+                            <p className="post-content">{post.content}</p>
+                        )}
                     </div>
                 ))}
             </div>

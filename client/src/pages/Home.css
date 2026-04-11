@@ -1,4 +1,4 @@
-/* ---------- SEARCH BAR ---------- */
+/*  SEARCH BAR  */
 .search-bar-container {
     padding: 1rem;
     background: white;
@@ -71,7 +71,7 @@
 }
 .clear-btn-home:hover { background: #e0e0e0; }
 
-/* ---------- BOOKS GRID ---------- */
+/*  BOOKS GRID*/
 .books-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -82,7 +82,7 @@
     box-sizing: border-box;
 }
 
-/* ---------- BOOKS CARD ---------- */
+/* Book Card */
 .book-card .book-title {
     color:#222;
 }
@@ -91,7 +91,7 @@
     color: #444;
 }
 
-/* ---------- MODAL OVERLAY ---------- */
+
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -104,7 +104,7 @@
     box-sizing: border-box;
 }
 
-/* ---------- MODAL CARD ---------- */
+/*  MODAL CARD  */
 .book-modal {
     position: relative;
     width: min(900px, 100%);
@@ -120,7 +120,7 @@
     box-sizing: border-box;
 }
 
-/* ---------- IMAGE ---------- */
+/*  IMAGE  */
 .book-modal-image-wrapper {
     width: 100%;
     min-height: 380px;
@@ -136,7 +136,7 @@
     display: block;
 }
 
-/* ---------- CONTENT ---------- */
+/*  CONTENT  */
 .book-modal-content {
     text-align: left;
     display: flex;
@@ -147,18 +147,18 @@
 .book-modal-content h2 { margin: 0; color: #222; }
 .modal-category { margin: 0; font-size: 0.95rem; color: #777; }
 
-/* ---------- BORROW STATUS ---------- */
+/*  BORROW STATUS  */
 .modal-borrowed { margin: 0; font-size: 0.95rem; font-weight: 600; }
 .modal-borrowed.available { color: #1b7f3b; }
 .modal-borrowed.borrowed  { color: #b42318; }
 .modal-borrowed-by { margin: 0; font-size: 0.95rem; color: #555; }
 
-/* ---------- DESCRIPTION ---------- */
+/*  DESCRIPTION  */
 .modal-description-block { margin-top: 0.5rem; }
 .modal-description-block h3 { margin: 0 0 0.5rem 0; font-size: 1.05rem; color: #222; }
 .modal-description-block p { margin: 0; line-height: 1.6; color: #444; white-space: pre-wrap; }
 
-/* ---------- CLOSE BUTTON ---------- */
+/*  CLOSE BUTTON  */
 .close-btn {
     position: absolute;
     top: 0.85rem;
@@ -177,7 +177,7 @@
 }
 .close-btn:hover { background: #e0e0e0; transform: scale(1.05); }
 
-/* ---------- THREADS BUTTON ---------- */
+/*  THREADS BUTTON  */
 .threads-button {
     padding: 10px 20px;
     background-color: #4CAF50;
@@ -190,7 +190,7 @@
 }
 .threads-button:hover { background-color: #43a047; }
 
-/* ---------- BORROW BUTTON ---------- */
+/*  BORROW BUTTON  */
 .borrow-button {
     padding: 10px 20px;
     background-color: #4CAF50;
@@ -234,7 +234,7 @@
     .category-select { width: 100%; }
 }
 
-/* ---------- QUEUE ---------- */
+/*  BOOK QUEUE  */
 .queue-count {
     margin: 4px 0 0;
     font-size: 0.88rem;
