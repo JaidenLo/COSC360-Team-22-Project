@@ -44,7 +44,7 @@ function RegisterForm ({onSuccess}) {
         if (!file) return;
         const allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'];
         if (!allowed.includes(file.type)) {
-            setImageError('Only image files are allowed (jpeg, png, gif, webp)');
+            setImageError('Only image files are allowed (jpeg, jpg, png, gif, webp)');
             e.target.value = '';
             return;
         }
@@ -184,6 +184,8 @@ function RegisterForm ({onSuccess}) {
     return (
         <div className="form-wrapper">
             <div className="form-card">
+                <h1 className="form-brand">BookPool</h1>
+                <p className="form-subtitle">Create your account</p>
 
                 {/* pfp picker */}
                 <div className="avatar-upload-group">

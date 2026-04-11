@@ -280,3 +280,10 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+.modal-reserved {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #e65100;
+}

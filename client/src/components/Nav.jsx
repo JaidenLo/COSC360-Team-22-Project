@@ -11,6 +11,9 @@ function Nav({ user, setUser }) {
 
     return (
         <nav className="nav">
+            <div className="nav-logo">
+                <Link to="/home" className="nav-brand">BookPool</Link>
+            </div>
             <ul>
                 {user ? (
                     <>

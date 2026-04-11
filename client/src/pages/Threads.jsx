@@ -92,14 +92,14 @@ export default function Threads({ user }) {
         }
     };
 
-    const handleDelete = async (postId) => {
+        const handleDelete = async (postId) => {
         if (!window.confirm('Delete this post?')) return;
         setError('');
         try {
             const res = await fetch(`/api/threads/${postId}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId }),
+                body: JSON.stringify({ userId, usertype: user?.usertype }),
             });
             if (!res.ok) {
                 const data = await res.json();
@@ -107,7 +107,7 @@ export default function Threads({ user }) {
                 return;
             }
             setPosts(posts.filter(p => p._id !== postId));
-            setSuccess('✓ Post deleted.');
+            setSuccess('Post deleted.');
         } catch {
             setError('Failed to delete post.');
         }
@@ -161,7 +161,7 @@ export default function Threads({ user }) {
                                 >
                                     {collapsed[post._id] ? '▸ Show' : '▾ Hide'}
                                 </button>
-                                {userId && post.userId?.toString() === userId?.toString() && (
+                                {userId && (post.userId?.toString() === userId?.toString() || user?.usertype === 'admin') && (
                                     <button
                                         className="delete-post-btn"
                                         onClick={() => handleDelete(post._id)}
