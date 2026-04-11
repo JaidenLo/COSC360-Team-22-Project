@@ -48,12 +48,15 @@ const createThread = async (req, res) => {
 const deleteThread = async (req, res) => {
     try {
         const { id } = req.params;
-        const { userId } = req.body;
+        const { userId, usertype } = req.body;
 
         const thread = await Thread.findById(id);
         if (!thread) return res.status(404).json({ message: 'Thread not found' });
 
-        if (thread.userId?.toString() !== userId) {
+        const isOwner = thread.userId?.toString() === userId;
+        const isAdmin = usertype === 'admin';
+
+        if (!isOwner && !isAdmin) {
             return res.status(403).json({ message: 'Unauthorized: you can only delete your own posts' });
         }
 

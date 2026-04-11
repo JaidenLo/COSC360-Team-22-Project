@@ -10,6 +10,19 @@
 .nav-logo {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
+}
+
+.nav-brand {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #222;
+    text-decoration: none;
+    letter-spacing: -0.02em;
+}
+
+.nav-brand:hover {
+    color: #4CAF50;
 }
 
 ul {
@@ -18,7 +31,6 @@ ul {
     padding: 0;
     display: flex;
     align-items: center;
-    width: 100%;
     gap: 0.5rem;
 }
 
@@ -41,7 +53,6 @@ ul li a:hover,
 ul li button:hover {
     background-color: #333;
     color: #f0f0f0;
-
 }
 
 .logout-item {

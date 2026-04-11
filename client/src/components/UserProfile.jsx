@@ -136,10 +136,8 @@ function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
             {/* Header */}
             <div className="profile-top">
                 <div className="profile-avatar">
-                    <span className="avatar-icon">
-                        <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
-                    </span>
-                </div>
+                    <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                 </div>
                 <div className="profile-info">
                     <h2 className="profile-name">
                         {username}

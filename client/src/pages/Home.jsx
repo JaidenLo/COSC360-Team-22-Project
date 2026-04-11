@@ -21,11 +21,11 @@ function Home({ user }) {
     useEffect(() => { fetchBooks(); }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            fetchBooks();
-        }, 10000);
-        return () => clearInterval(interval);
-    }, []);
+    const interval = setInterval(() => {
+        fetchBooks(true);
+    }, 5000);
+    return () => clearInterval(interval);
+}, []);
 
     useEffect(() => {
         if (location.state?.openBook) {
@@ -33,8 +33,8 @@ function Home({ user }) {
         }
     }, []);
 
-    async function fetchBooks() {
-        setLoading(true);
+        async function fetchBooks(silent = false) {
+        if (!silent) setLoading(true);
         setError("");
         try {
             const response = await fetch("/api/books");
@@ -48,7 +48,7 @@ function Home({ user }) {
         } catch (err) {
             setError(err.message);
         } finally {
-            setLoading(false);
+            if (!silent) setLoading(false);
         }
     }
 
@@ -272,6 +272,12 @@ function Home({ user }) {
                                 Status: {selectedBook.borrowed ? "Borrowed" : "Available"}
                             </p>
 
+                            {selectedBook.reservedFor?.userId && !isReservedForMe(selectedBook) && (
+                                <p className="modal-reserved">
+                                    Reserved for another user
+                                </p>
+                            )}
+
                             {selectedBook.borrowed && (
                                 <p className="modal-borrowed-by">Borrowed By: {selectedBook.borrowedBy?.name || "Unknown"}</p>
                             )}
@@ -317,7 +323,7 @@ function Home({ user }) {
                                         Borrow Now
                                     </button>
                                 )}
-                                {selectedBook.borrowed && !isReservedForMe(selectedBook) && !isBorrowedByMe(selectedBook) && userId && (
+                                {(selectedBook.borrowed || selectedBook.reservedFor?.userId) && !isReservedForMe(selectedBook) && !isBorrowedByMe(selectedBook) && userId && (
                                     isInQueue(selectedBook) ? (
                                         <button
                                             className="queue-button leave"

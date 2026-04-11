@@ -20,7 +20,7 @@ const upload = multer({
 // Register user
 const registerUser = async (req, res) => {
     try {
-        const { username, email, password, city } = req.body;
+        const { username, email, password, city, image } = req.body;
 
         const emailExists = await User.findOne({ email });
         if (emailExists) {
@@ -35,8 +35,7 @@ const registerUser = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // convert uploaded image to base64 if provided
-        let avatarBase64 = '';
+        let avatarBase64 = image || '';
         if (req.file) {
             avatarBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
         }

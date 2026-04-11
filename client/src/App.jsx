@@ -13,9 +13,15 @@ import Threads from "./pages/Threads";
 import AdminDashboard from "./pages/AdminDashboard";
 import "./App.css";
 
-// Redirects to /login if user is not logged in
+// Requires any logged in user
 function ProtectedRoute({ user, children }) {
-    if (!user ) return <Navigate to="/login" replace />;
+    if (!user) return <Navigate to="/login" replace />;
+    return children;
+}
+
+// Requires admin only
+function AdminRoute({ user, children }) {
+    if (!user || user.usertype !== 'admin') return <Navigate to="/home" replace />;
     return children;
 }
 
@@ -56,7 +62,7 @@ function App() {
                     <Route path="/register" element={<Register onSuccess={handleSetUser} />} />
                     <Route path="/home" element={<Home user={user} />} />
 
-                    {/* Protected routes, now require login */}
+                    {/* Protected routes — any logged in user */}
                     <Route path="/profile" element={
                         <ProtectedRoute user={user}>
                             <Profile user={user} />
@@ -83,10 +89,11 @@ function App() {
                         </ProtectedRoute>
                     } />
 
+                    {/* Admin only route */}
                     <Route path="/admin-dashboard" element={
-                        <ProtectedRoute user={user}>
+                        <AdminRoute user={user}>
                             <AdminDashboard userId={user?._id} usertype={user?.usertype} />
-                        </ProtectedRoute>
+                        </AdminRoute>
                     } />
 
                     {/* 404 catch-all */}
