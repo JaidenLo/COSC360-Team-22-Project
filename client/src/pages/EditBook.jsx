@@ -153,7 +153,7 @@ function EditBook({ user }) {
                 </div>
 
                 <div style={{ display: "flex", gap: "10px" }}>
-                    <button type="submit" style={{ padding: "10px 20px", backgroundColor: "#4CAF50", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}>
+                    <button type="submit" style={{ padding: "10px 20px", backgroundColor: "#4a7c59", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}>
                         Save Changes
                     </button>
                     <button type="button" onClick={handleDelete} style={{ padding: "10px 20px", backgroundColor: "#e53935", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}>

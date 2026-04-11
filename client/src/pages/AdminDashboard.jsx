@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminDashboard.css";
 import {
-    Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
     PieChart, Pie, Cell, Legend, ResponsiveContainer,
-    LineChart
+    
 } from "recharts";
 
 function AdminDashboard({ userId, usertype }) {
@@ -108,7 +108,7 @@ function handleSearch(e) {
                     <p>Welcome, {name}!</p>
                 </div>
 
-                {/* stat cards — now includes user count */}
+                
                 <div className="stats-grid">
                     <div className="stat-card">
                         <p className="stat-number">{users.length}</p>

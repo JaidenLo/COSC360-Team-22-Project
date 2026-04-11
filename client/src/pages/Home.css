@@ -25,7 +25,7 @@
     color:#fff;
 }
 
-.search-input-home:focus { border-color: #4CAF50; }
+.search-input-home:focus { border-color: #4a7c59; }
 
 .category-select {
     padding: 0.6rem 0.75rem;
@@ -37,7 +37,7 @@
     cursor: pointer;
     outline: none;
 }
-.category-select:focus { border-color: #4CAF50; }
+.category-select:focus { border-color: #4a7c59; }
 
 .category-select option {
     background: white;
@@ -46,7 +46,7 @@
 
 .search-btn-home {
     padding: 0.6rem 1.4rem;
-    background: #4CAF50;
+    background: #4a7c59;
     color: white;
     border: none;
     border-radius: 8px;
@@ -180,7 +180,7 @@
 /*  THREADS BUTTON  */
 .threads-button {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #4a7c59;
     color: white;
     border: none;
     border-radius: 6px;
@@ -193,7 +193,7 @@
 /*  BORROW BUTTON  */
 .borrow-button {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #4a7c59;
     color: white;
     border: none;
     border-radius: 6px;
@@ -279,11 +279,4 @@
 .queue-button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-}
-
-.modal-reserved {
-    margin: 0;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #e65100;
 }
