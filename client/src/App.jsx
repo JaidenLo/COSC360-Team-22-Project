@@ -15,7 +15,7 @@ import "./App.css";
 
 // Redirects to /login if user is not logged in
 function ProtectedRoute({ user, children }) {
-    if (!user || user.usertype !== 'admin') return <Navigate to="/login" replace />;
+    if (!user ) return <Navigate to="/login" replace />;
     return children;
 }
 
