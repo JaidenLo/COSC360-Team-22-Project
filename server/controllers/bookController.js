@@ -1,4 +1,5 @@
 const Book = require('../models/Book');
+const BookBorrowHistory = require('../models/BookBorrowHistory');
 
 const getAllBooks = async (req, res) => {
     try {
@@ -103,6 +104,10 @@ const borrowBook = async (req, res) => {
         const { userId } = req.body;
 
         const book = await Book.findById(id);
+        let borrowHistory = await BookBorrowHistory.findOne({ bookId: id, userId, action: 'borrowed' }).sort({ borrowDate: -1 });
+        if (borrowHistory) {
+            return res.status(400).json({ message: 'You already have this book borrowed' });
+        }
         if (!book) return res.status(404).json({ message: 'Book not found' });
         if (book.borrowed) return res.status(400).json({ message: 'Book is already borrowed' });
 
@@ -116,8 +121,15 @@ const borrowBook = async (req, res) => {
             if (book.reservedFor.expiresAt < now) {
                 // reservation expired, clear it and allow anyone
                 book.reservedFor = { userId: null, username: null, expiresAt: null };
+                
             }
         }
+        
+         borrowHistory = await BookBorrowHistory.create({ bookId: id, userId, borrowDate: new Date(), action: 'borrowed' });
+        
+
+
+
 
         book.borrowed = true;
         book.borrowedBy = userId;
@@ -136,6 +148,12 @@ const returnBook = async (req, res) => {
         const { userId } = req.body;
 
         const book = await Book.findById(id);
+        const bookReturnHistory = await BookBorrowHistory.findOne({ bookId: id, userId }).sort({ borrowDate: -1 });
+        if (bookReturnHistory) {
+            bookReturnHistory.returnDate = new Date();
+            bookReturnHistory.action = 'returned';
+            await bookReturnHistory.save();
+        }
         if (!book) return res.status(404).json({ message: 'Book not found' });
         if (!book.borrowed) return res.status(400).json({ message: 'Book is not currently borrowed' });
         if (book.borrowedBy && book.borrowedBy.toString() !== userId) {

@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
+const BookHistory = require('../models/BookBorrowHistory');
 
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -197,4 +198,70 @@ const getImgLink = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser, getAllUsers, updateUser, saveImg, deleteUser, getImgLink, upload };
+const graphs = async (req, res) => {
+    try {
+        const { adminId } = req.query; 
+
+        const admin = await User.findById(adminId).select('name usertype');
+        if (!admin || admin.usertype !== 'admin') {
+            return res.status(403).json({ message: 'Unauthorized: Admin ID required' });
+        }
+
+        const Book = require('../models/Book');
+        const Thread = require('../models/Thread');
+        const BookBorrowHistory = require('../models/BookBorrowHistory');
+
+        const users = await User.find({ usertype: 'user' }).select('-password');
+        const books = await Book.find();
+        const threads = await Thread.find();
+
+        const bookHistory = await BookBorrowHistory.aggregate([
+            {
+                $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$borrowDate" } },
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ]);
+
+        res.status(200).json({
+            name: admin.name,  
+            users,
+            books,
+            threads,
+            bookHistory
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+const bookhistoryTrack = async (req, res) => {
+    try {
+        const { search } = req.query;
+        const BookBorrowHistory = require('../models/BookBorrowHistory');
+        const Book = require('../models/Book');
+
+        const book = await Book.findOne({
+            title: { $regex: search, $options: 'i' }
+        });
+
+        if (!book) {
+            return res.status(404).json({ message: 'Book not found' });
+        }
+
+        const history = await BookBorrowHistory.find({ bookId: book._id })
+            .populate('userId', 'name')
+            .sort({ borrowDate: -1 });
+
+        res.status(200).json(history);
+
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+
+module.exports = { registerUser, loginUser, getAllUsers, updateUser, saveImg, deleteUser, getImgLink, upload, graphs, bookhistoryTrack };

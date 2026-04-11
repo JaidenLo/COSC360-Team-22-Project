@@ -10,11 +10,12 @@ import AddBook from "./pages/AddBook";
 import EditBook from "./pages/EditBook";
 import UserSettings from "./pages/UserSettings";
 import Threads from "./pages/Threads";
+import AdminDashboard from "./pages/AdminDashboard";
 import "./App.css";
 
 // Redirects to /login if user is not logged in
 function ProtectedRoute({ user, children }) {
-    if (!user) return <Navigate to="/login" replace />;
+    if (!user || user.usertype !== 'admin') return <Navigate to="/login" replace />;
     return children;
 }
 
@@ -79,6 +80,12 @@ function App() {
                     <Route path="/threads" element={
                         <ProtectedRoute user={user}>
                             <Threads user={user} />
+                        </ProtectedRoute>
+                    } />
+
+                    <Route path="/admin-dashboard" element={
+                        <ProtectedRoute user={user}>
+                            <AdminDashboard userId={user?._id} usertype={user?.usertype} />
                         </ProtectedRoute>
                     } />
 

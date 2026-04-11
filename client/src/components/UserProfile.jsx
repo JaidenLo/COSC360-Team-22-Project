@@ -12,6 +12,7 @@ function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
     const [myBooks, setMyBooks] = useState([]);
     const [borrowedBooks, setBorrowedBooks] = useState([]);
     const [uploadError, setUploadError] = useState('');
+    
     const fileInputRef = useRef(null);
 
 
@@ -87,7 +88,9 @@ function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
     }
 
     function triggerUpload() { fileInputRef.current?.click(); }
-    
+
+
+
     function handleFileChange(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -140,7 +143,7 @@ function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
                 <div className="profile-info">
                     <h2 className="profile-name">
                         {username}
-                        {usertype === 'admin' && <span className="admin-tag">Admin</span>}
+                        {usertype === 'admin' && <span className="admin-tag" onClick={() => {navigate("/admin-dashboard")}}>Admin</span> } 
                     </h2>
                     <p className="profile-email">{email}</p>
                     <p className="profile-city">{city || "Not set"}</p>
@@ -252,7 +255,7 @@ function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
                     <h3>Search Users</h3>
                     <form onSubmit={handleSearch}>
                         <input type="text" placeholder="Search by name..." value={search} onChange={(e) => setSearch(e.target.value)} className="search-input" />
-                        <button type="submit">Search</button>
+                        <button type="submit" className="search-button">Search</button>
                     </form>
                     {searched && users.length === 0 && <p>No users found.</p>}
                     {users.length > 0 && (

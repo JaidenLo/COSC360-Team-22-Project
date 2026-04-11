@@ -10,8 +10,11 @@ const {
     deleteUser,
     saveImg,
     getImgLink,
-    upload
+    upload,
+    graphs,
+    bookhistoryTrack
 } = require('../controllers/userController');
+
 
 router.get('/check-username', async (req, res) => {
     try {
@@ -40,6 +43,20 @@ router.get('/search', getAllUsers);
 router.delete('/delete/:id', deleteUser);
 router.post('/:userId/uploadImg', saveImg);
 router.get('/:userId/image', getImgLink);
-router.put('/:id', updateUser);
 
+
+//admin-dashboard/${user._id}
+router.get('/admin-dashboard/search', bookhistoryTrack);
+router.get('/admin-dashboard', graphs);
+router.get('/admin-dashboard/debug', async (req, res) => {
+    try {
+        const BookBorrowHistory = require('../models/BookBorrowHistory');
+        const count = await BookBorrowHistory.countDocuments();
+        const sample = await BookBorrowHistory.findOne();
+        res.status(200).json({ count, sample });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+router.put('/:id', updateUser);
 module.exports = router;
