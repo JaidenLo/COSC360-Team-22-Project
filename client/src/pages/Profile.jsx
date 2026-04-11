@@ -15,6 +15,7 @@ function Profile({ user }) {
                 usertype={user.usertype}
                 city={user.city}
                 aboutMe={user.aboutMe}
+
             />
         </div>
     );

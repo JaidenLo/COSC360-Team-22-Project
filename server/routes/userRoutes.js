@@ -12,7 +12,8 @@ const {
     getImgLink,
     upload,
     graphs,
-    bookhistoryTrack
+    bookhistoryTrack, 
+    getUserById
 } = require('../controllers/userController');
 
 
@@ -59,4 +60,5 @@ router.get('/admin-dashboard/debug', async (req, res) => {
     }
 });
 router.put('/:id', updateUser);
+router.get('/:id', getUserById);  
 module.exports = router;

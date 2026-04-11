@@ -13,8 +13,34 @@ function UserProfile({ userId, username, email, usertype, city, aboutMe }) {
     const [borrowedBooks, setBorrowedBooks] = useState([]);
     const [uploadError, setUploadError] = useState('');
     
+    
     const fileInputRef = useRef(null);
 
+    function handleLogout() {
+        // setUser(null);
+        navigate('/login');
+    }
+
+
+    useEffect(() => {
+    if (!userId) return;
+
+    const checkUserExists = async () => {
+        try {
+            const response = await fetch(`/api/users/${userId}`);
+            if (response.status === 404) {
+                alert('Your account has been deleted by an admin.');
+                handleLogout();
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const interval = setInterval(checkUserExists, 10000);
+    return () => clearInterval(interval);
+
+}, [userId]);
 
     useEffect(() => {
     if (!userId) return;
