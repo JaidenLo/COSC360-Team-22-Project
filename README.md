@@ -23,6 +23,6 @@ BookPool is a full-stack MERN web application (MongoDB, Express, React, Node.js)
    docker compose up --build
 
 ### Documentation
-[User Guide](./BOOKPOOL_USER_GUIDE.pdf) User guide for how to run the website 
+[User Guide](./BOOKPOOL%20USER%20GUIDE.pdf) User guide for how to run the website 
 
-[Developer Documentation](./BOOKPOOL_DEVELOPER_AND_SYSTEM_DESCRIPTION.pdf) Developer document highlighting file process, how it works, features, limits, and testing.
+[Developer Documentation](./BOOKPOOL%20DEVELOPER%20AND%20SYSTEM%20DESCRIPTION.pdf) Developer document highlighting file process, how it works, features, limits, and testing.
