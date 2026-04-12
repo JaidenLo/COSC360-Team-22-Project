@@ -192,11 +192,11 @@ Test unit tests for validation logic, home helpers, and thread helpers
 
 ## Known Limitations
 
-Profile pictures and book images are stored as base64 strings in MongoDB rather than a dedicated file storage service, which limits image size and may affect performance at scale.
-The admin enable/disable user feature is not implemented — admins can delete users but cannot temporarily suspend them.
-The borrowing queue reservation expiry is not automatically enforced on the server — expired reservations are only cleared when the next borrow attempt is made.
-Thread posts do not support editing, only deletion.
-The polling interval pauses when filters are active, meaning live updates will not appear while a category filter is applied.
+- Profile pictures and book images are stored as base64 strings in MongoDB rather than a dedicated file storage service, which limits image size and may affect performance at scale.
+- The admin enable/disable user feature is not implemented — admins can delete users but cannot temporarily suspend them.
+- The borrowing queue reservation expiry is not automatically enforced on the server — expired reservations are only cleared when the next borrow attempt is made.
+- Thread posts do not support editing, only deletion.
+- The polling interval pauses when filters are active, meaning live updates will not appear while a category filter is applied.
 
 ## Testing
 Project uses Vitest for frontend unit testing located at client/src/tests and covers validation of login/registration, Homepage book ownership, queue membership etc, and threads test that test thread delete permissions, empty post detection and fetch call mocking for post and delete operations.
