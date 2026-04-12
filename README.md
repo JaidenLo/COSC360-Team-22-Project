@@ -19,11 +19,5 @@ A full-stack web application built with the MERN stack.
 1. Clone the repo
    git clone https://github.com/JaidenLo/COSC360-Team-22-Project.git
 
-2. Create your .env file
-   cp .env.example .env
-
-3. Run with Docker
-   docker compose up
-
-## Environment Variables
-See .env.example for required variables.
+2. Run with Docker
+   docker compose up --build
